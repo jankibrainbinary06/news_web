@@ -37,14 +37,14 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: ColorRes.appColor),
         useMaterial3: true,
-        datePickerTheme: DatePickerThemeData(
+        datePickerTheme: const DatePickerThemeData(
           backgroundColor: ColorRes.datePicker,
         ),
-        timePickerTheme: TimePickerThemeData(
+        timePickerTheme: const TimePickerThemeData(
           backgroundColor: ColorRes.datePicker,
         ),
       ),
-      home: ImageFromFirebaseStorage(),
+      home: const DashBoardScreen(),
     );
   }
 }

@@ -8,29 +8,21 @@ import 'package:get/get.dart';
 class DashboardController extends GetxController {
   // Darshil category sub category
 
+
+
+
   String? imageUrl;
   var newsId;
-  @override
-  Future<void> onInit() async {
-    // TODO: implement onInit
 
-    try {
-      final Reference ref = storage.ref().child(
-          'NewsImage/3Rvtw7tW8tUgBxNlRylo.png'); // Replace 'your_image.jpg' with your image's path.
-      final String downloadUrl = await ref.getDownloadURL();
-      imageUrl = downloadUrl;
-    } catch (e) {
-      print('Error retrieving image: $e');
-    }
-    super.onInit();
-  }
+  bool isLoading = false;
 
   bool islogout = false;
   List subCategories = [];
   var docId;
   var categoryData;
   int? subIndex;
-
+  var imagedocid;
+  String? url;
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
