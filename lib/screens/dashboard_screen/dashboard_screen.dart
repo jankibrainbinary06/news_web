@@ -694,10 +694,7 @@ class DashBoardScreen extends StatelessWidget {
                                                         GestureDetector(
                                                           onTap: () {
                                                             Get.back();
-                                                            PrefService
-                                                                .setValue(
-                                                                    'isLogged',
-                                                                    false);
+
                                                             Get.to(
                                                                 const LoginScreen());
                                                             dashboardController

@@ -145,7 +145,7 @@ class NewsDetail extends StatelessWidget {
                             border: Border.all(color: Colors.white, width: 1),
                           ),
                           child: /*Image.network(data['subcategory'][dashboardController.indexOfDropDown]['Data']['ImageUrl'])*/
-                              /*CachedNetworkImage(
+                              CachedNetworkImage(
                             imageUrl: data['subcategory']
                                         [dashboardController.indexOfDropDown]
                                     ['Data']['ImageUrl'] ??
@@ -154,8 +154,9 @@ class NewsDetail extends StatelessWidget {
                                 Center(child: CircularProgressIndicator()),
                             errorWidget: (context, url, error) =>
                                 Icon(Icons.error),
-                          )*/
-                              FadeInImage.assetNetwork(
+                          ),
+                        ),
+                        /*  FadeInImage.assetNetwork(
                             placeholder: 'assets/images/video_thumbnail.jpg',
                             image: data['subcategory']
                                         [dashboardController.indexOfDropDown]
@@ -163,7 +164,7 @@ class NewsDetail extends StatelessWidget {
                                 "",
                             fit: BoxFit.cover,
                           ),
-                        ),
+                        )*/
                         SizedBox(
                           height: Get.height * 0.025,
                         ),
@@ -176,7 +177,7 @@ class NewsDetail extends StatelessWidget {
                           height: Get.height * 0.025,
                         ),
                         Text(
-                          "${data['subcategory'][dashboardController.indexOfDropDown]['Data']['Description'] ?? "No Data"}",
+                          "${data['subcategory'][dashboardController.indexOfDropDown]['Data']['Description'] ?? ""}",
                           style: mediumSf.copyWith(
                               fontSize: 22, fontWeight: FontWeight.w400),
                         ),

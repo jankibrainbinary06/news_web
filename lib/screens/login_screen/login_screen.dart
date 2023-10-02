@@ -114,14 +114,28 @@ class LoginScreen extends StatelessWidget {
                                           width: 1),
                                       borderRadius: BorderRadius.circular(5),
                                     ),
-                                    child: CommonTextField(
+                                    child: TextField(
                                       controller: controller.emailController,
-                                      hintText: "Enter email ID",
-                                      child: Image.asset(
-                                        AssetRes.email,
-                                        color: Colors.black,
-                                        height: 30,
-                                        width: 30,
+                                      decoration: InputDecoration(
+                                        contentPadding:
+                                            const EdgeInsetsDirectional.only(
+                                                top: 20),
+                                        hintText: "Enter email ID",
+                                        hintStyle: const TextStyle(
+                                          fontFamily: "sfPro",
+                                          color: Color(
+                                            0xff333333,
+                                          ),
+                                        ),
+                                        prefixIcon: Padding(
+                                          padding: const EdgeInsets.all(15),
+                                          child: Image.asset(
+                                            AssetRes.email,
+                                            color: Colors.black,
+                                            height: 30,
+                                            width: 30,
+                                          ),
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -145,14 +159,26 @@ class LoginScreen extends StatelessWidget {
                                           width: 1),
                                       borderRadius: BorderRadius.circular(5),
                                     ),
-                                    child: CommonTextField(
+                                    child: TextField(
                                       controller: controller.passwordController,
-                                      hintText: "Enter password",
-                                      child: Image.asset(
-                                        AssetRes.lock,
-                                        color: Colors.black,
-                                        height: 30,
-                                        width: 30,
+                                      decoration: InputDecoration(
+                                        contentPadding:
+                                            const EdgeInsetsDirectional.only(
+                                                top: 20),
+                                        hintText: "Enter password",
+                                        hintStyle: (const TextStyle(
+                                          fontFamily: "sfPro",
+                                          color: Color(0xff333333),
+                                        )),
+                                        prefixIcon: Padding(
+                                          padding: const EdgeInsets.all(15),
+                                          child: Image.asset(
+                                            AssetRes.lock,
+                                            color: Colors.black,
+                                            height: 30,
+                                            width: 30,
+                                          ),
+                                        ),
                                       ),
                                     ),
                                   ),
