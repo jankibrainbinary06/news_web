@@ -12,6 +12,8 @@ import 'package:news_web_app/utils/color_res.dart';
 import 'package:news_web_app/utils/string_res.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
+import '../../Services/Shared_pref_services/pref_service.dart';
+
 class DashBoardScreen extends StatelessWidget {
   const DashBoardScreen({Key? key}) : super(key: key);
 
@@ -267,7 +269,8 @@ class DashBoardScreen extends StatelessWidget {
                                         GestureDetector(
                                           onTap: () {
                                             dashboardController.islogout = true;
-
+                                            PrefService.setValue(
+                                                'isLogged', false);
                                             Get.back();
                                             Get.to(const LoginScreen());
                                             dashboardController
@@ -407,13 +410,18 @@ class DashBoardScreen extends StatelessWidget {
                                   SizedBox(
                                     width: width * 0.25,
                                   ),
-                                  dashboardController.isTapCategory
+                                  dashboardController.isTapCategory ||
+                                          dashboardController.isNewsDetail
                                       ? InkWell(
                                           onTap: () {
                                             dashboardController.isTapCategory =
                                                 false;
+                                            dashboardController.isNewsDetail =
+                                                false;
                                             dashboardController
                                                 .update(['dash']);
+                                            dashboardController
+                                                .update(['news']);
                                             dashboardController
                                                 .update(['category']);
                                           },
@@ -686,6 +694,10 @@ class DashBoardScreen extends StatelessWidget {
                                                         GestureDetector(
                                                           onTap: () {
                                                             Get.back();
+                                                            PrefService
+                                                                .setValue(
+                                                                    'isLogged',
+                                                                    false);
                                                             Get.to(
                                                                 const LoginScreen());
                                                             dashboardController

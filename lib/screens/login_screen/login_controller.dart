@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:news_web_app/Services/Shared_pref_services/pref_service.dart';
 import 'package:news_web_app/screens/dashboard_screen/dashboard_screen.dart';
 import 'package:news_web_app/utils/string_res.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginController extends GetxController {
   final TextEditingController emailController = TextEditingController();
@@ -57,7 +59,9 @@ class LoginController extends GetxController {
       print(email);
       if (email == emailController.text &&
           password == passwordController.text) {
+        PrefService.setValue('isLogged', true);
         Get.to(const DashBoardScreen());
+
         emailController.clear();
         passwordController.clear();
       } else {

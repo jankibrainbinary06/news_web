@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "news-app-c50bf"
-  }
+    "default": "news-app-c50bf",
+    "staging": "news-app-c50bf"
+  },
+  "targets": {},
+  "etags": {}
 }

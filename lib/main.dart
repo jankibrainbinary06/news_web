@@ -3,12 +3,12 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:news_web_app/screens/dashboard_screen/dashboard_screen.dart';
+import 'package:news_web_app/screens/login_screen/login_screen.dart';
 import 'package:news_web_app/utils/color_res.dart';
-
-import 'demo.dart';
-import 'screens/login_screen/login_screen.dart';
+import 'Services/Shared_pref_services/pref_service.dart';
 
 Future<void> main() async {
+  await PrefService.init();
   WidgetsFlutterBinding.ensureInitialized();
   if (kIsWeb) {
     await Firebase.initializeApp(
@@ -22,6 +22,7 @@ Future<void> main() async {
       ),
     );
   }
+
   runApp(const MyApp());
 }
 
@@ -44,7 +45,9 @@ class MyApp extends StatelessWidget {
           backgroundColor: ColorRes.datePicker,
         ),
       ),
-      home: const DashBoardScreen(),
+      home: PrefService.getBool('isLogged')
+          ? const DashBoardScreen()
+          : const LoginScreen(),
     );
   }
 }
