@@ -60,7 +60,12 @@ class LoginController extends GetxController {
       if (email == emailController.text &&
           password == passwordController.text) {
         PrefService.setValue('isLogged', true);
-        Get.to(const DashBoardScreen());
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const DashBoardScreen(),
+          ),
+        );
 
         emailController.clear();
         passwordController.clear();

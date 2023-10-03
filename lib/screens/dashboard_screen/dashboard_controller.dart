@@ -1,19 +1,21 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:video_player/video_player.dart';
 
 class DashboardController extends GetxController {
   // Darshil category sub category
 
+  VideoPlayerController? VideoCntrl;
+  VideoPlayerController? DetailVideo;
 
-
-
-  String? imageUrl;
   var newsId;
-
+  bool isVideo = false;
   bool isLoading = false;
 
   bool islogout = false;
@@ -87,8 +89,9 @@ class DashboardController extends GetxController {
   String? description = '';
 
   PlatformFile? imageFile;
+  var image;
   List<Uint8List> imagesPath = [];
-
+  var type;
   Uint8List? imageData;
   Uint8List? newsImage;
   FilePickerResult? result;
@@ -104,8 +107,11 @@ class DashboardController extends GetxController {
     update(["news"]);
   }
 
-  Future<void> pickImage() async {
+  bool loadImg = false;
+  Future<void> pickImage(var dialogue) async {
     try {
+      loadImg = true;
+      dialogue.call(() {});
       result = await FilePicker.platform.pickFiles(
         type: FileType.custom,
         allowMultiple: false,
@@ -114,8 +120,9 @@ class DashboardController extends GetxController {
 
       if (result == null) return;
 
+      image = result?.files.toString();
       imageData = result!.files.first.bytes;
-
+      type = result!.files.first.extension;
       imageFile = result!.files.first;
       result!.files.forEach((element) {
         if (element.extension == 'jpg' ||
@@ -124,12 +131,13 @@ class DashboardController extends GetxController {
             element.extension == 'webp' ||
             element.extension == 'mp4') {
           imagesPath.add(element.bytes!);
+          loadImg = false;
+          dialogue.call(() {});
         }
       });
       update(['dash']);
-      print(imageFile!.bytes);
     } catch (e) {
-      print('hdus');
+      print("Eror----> $e");
     }
   }
 }

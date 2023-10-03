@@ -13,6 +13,8 @@ import 'package:news_web_app/utils/assets_res.dart';
 import 'package:news_web_app/utils/color_res.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:video_player/video_player.dart';
+import '../../demo.dart';
 import '../../utils/string_res.dart';
 
 class NewsScreen extends StatelessWidget {
@@ -28,6 +30,8 @@ class NewsScreen extends StatelessWidget {
     double border = 0;
     bool isMobile = false;
     int selectedIndex = 0;
+    bool upload = false;
+
     return Expanded(
       child: ResponsiveBuilder(builder: (context, sizingInformation) {
         if (sizingInformation.isDesktop) {
@@ -61,6 +65,13 @@ class NewsScreen extends StatelessWidget {
                   "subCategory": element['subcategory'],
                 });
               });
+              void _toggleVideo() {
+                if (dashboardController.DetailVideo!.value.isPlaying) {
+                  dashboardController.DetailVideo!.pause();
+                } else {
+                  dashboardController.DetailVideo!.play();
+                }
+              }
 
               return Container(
                 margin: EdgeInsets.only(
@@ -344,6 +355,10 @@ class NewsScreen extends StatelessWidget {
                                                                               'category']
                                                                           .toString(),
                                                                       style: const TextStyle(
+                                                                          fontSize:
+                                                                              18,
+                                                                          fontWeight: FontWeight
+                                                                              .normal,
                                                                           color:
                                                                               Colors.black),
                                                                     ),
@@ -382,23 +397,18 @@ class NewsScreen extends StatelessWidget {
                                                                     BorderRadius
                                                                         .circular(
                                                                             5),
-                                                                icon: Padding(
-                                                                  padding:
-                                                                      const EdgeInsets
-                                                                          .only(
+                                                                icon:
+                                                                    const Padding(
+                                                                  padding: EdgeInsets
+                                                                      .only(
                                                                           right:
                                                                               10),
-                                                                  child: Image
-                                                                      .asset(
-                                                                    AssetRes
-                                                                        .arrowDown,
-                                                                    height:
-                                                                        height *
-                                                                            0.05,
-                                                                    width:
-                                                                        width *
-                                                                            0.05,
-                                                                  ),
+                                                                  child: Icon(
+                                                                      Icons
+                                                                          .keyboard_arrow_down_outlined,
+                                                                      color: Colors
+                                                                          .black,
+                                                                      size: 20),
                                                                 ),
                                                                 elevation: 16,
                                                                 onChanged:
@@ -566,22 +576,54 @@ class NewsScreen extends StatelessWidget {
                                                                     BorderRadius
                                                                         .circular(
                                                                             5),
-                                                                child: Image
-                                                                    .memory(
-                                                                  Uint8List.fromList(
-                                                                      dashboardController
-                                                                          .newsImage!),
-                                                                  // width: width *
-                                                                  //     25,
-                                                                  height: sizingInformation
-                                                                          .isDesktop
-                                                                      ? height *
-                                                                          0.5
-                                                                      : height *
-                                                                          0.34,
-                                                                  fit: BoxFit
-                                                                      .cover,
-                                                                ),
+                                                                child: dashboardController
+                                                                            .result!
+                                                                            .files
+                                                                            .first
+                                                                            .extension !=
+                                                                        'mp4'
+                                                                    ? Image
+                                                                        .memory(
+                                                                        Uint8List
+                                                                            .fromList(
+                                                                          dashboardController
+                                                                              .newsImage!,
+                                                                        ),
+                                                                        // width: width *
+                                                                        //     25,
+                                                                        height: sizingInformation.isDesktop
+                                                                            ? height *
+                                                                                0.5
+                                                                            : height *
+                                                                                0.34,
+                                                                        fit: BoxFit
+                                                                            .cover,
+                                                                      )
+                                                                    : Stack(
+                                                                        children: [
+                                                                          VideoPlayer(
+                                                                              dashboardController.DetailVideo!),
+                                                                          Center(
+                                                                            child:
+                                                                                InkWell(
+                                                                              onTap: () {
+                                                                                _toggleVideo();
+                                                                                dashboardController.update([
+                                                                                  'news'
+                                                                                ]);
+                                                                              },
+                                                                              child: CircleAvatar(
+                                                                                maxRadius: 20,
+                                                                                child: dashboardController.DetailVideo!.value.isPlaying
+                                                                                    ? const Icon(Icons.pause)
+                                                                                    : const Icon(
+                                                                                        Icons.play_arrow,
+                                                                                      ),
+                                                                              ),
+                                                                            ),
+                                                                          ),
+                                                                        ],
+                                                                      ),
                                                               ),
                                                             ),
                                                       SizedBox(
@@ -736,6 +778,9 @@ class NewsScreen extends StatelessWidget {
                                                                   "ImageUrl":
                                                                       dashboardController
                                                                           .url,
+                                                                  "AssetType":
+                                                                      dashboardController
+                                                                          .type,
                                                                 }
                                                               });
 
@@ -911,56 +956,58 @@ class NewsScreen extends StatelessWidget {
                                                                           dashboardController.imageData == null
                                                                               ? GestureDetector(
                                                                                   onTap: () async {
-                                                                                    await dashboardController.pickImage();
+                                                                                    await dashboardController.pickImage(updateDialog);
                                                                                     updateDialog.call(() {});
                                                                                   },
-                                                                                  child: Container(
-                                                                                    padding: EdgeInsets.symmetric(horizontal: width * 0.4, vertical: width * 0.2),
-                                                                                    decoration: BoxDecoration(
-                                                                                        borderRadius: BorderRadius.circular(
-                                                                                          6,
-                                                                                        ),
-                                                                                        color: ColorRes.newsbgtextfield,
-                                                                                        border: Border.all(width: 1, color: ColorRes.newsborder)),
-                                                                                    child: Stack(
-                                                                                      alignment: Alignment.center,
-                                                                                      children: [
-                                                                                        Image.asset(
-                                                                                          AssetRes.imagePicker,
-                                                                                          height: height * 0.08,
-                                                                                          width: height * 0.1,
-                                                                                        ),
-                                                                                        Stack(
-                                                                                          alignment: Alignment.bottomRight,
-                                                                                          children: [
-                                                                                            Container(
-                                                                                              // color: Colors.red,
-                                                                                              height: height * 0.1,
-                                                                                              width: height * 0.1,
-                                                                                            ),
-                                                                                            Container(
-                                                                                              height: width * 0.08,
-                                                                                              width: width * 0.08,
-                                                                                              decoration: const BoxDecoration(
-                                                                                                color: Color(0xff55A1FF),
-                                                                                                shape: BoxShape.circle,
+                                                                                  child: dashboardController.loadImg == true
+                                                                                      ? SizedBox(height: height * 0.2, child: const Center(child: CircularProgressIndicator()))
+                                                                                      : Container(
+                                                                                          padding: EdgeInsets.symmetric(horizontal: width * 0.4, vertical: width * 0.2),
+                                                                                          decoration: BoxDecoration(
+                                                                                              borderRadius: BorderRadius.circular(
+                                                                                                6,
                                                                                               ),
-                                                                                              alignment: Alignment.center,
-                                                                                              child: Wrap(
+                                                                                              color: ColorRes.newsbgtextfield,
+                                                                                              border: Border.all(width: 1, color: ColorRes.newsborder)),
+                                                                                          child: Stack(
+                                                                                            alignment: Alignment.center,
+                                                                                            children: [
+                                                                                              Image.asset(
+                                                                                                AssetRes.imagePicker,
+                                                                                                height: height * 0.08,
+                                                                                                width: height * 0.1,
+                                                                                              ),
+                                                                                              Stack(
+                                                                                                alignment: Alignment.bottomRight,
                                                                                                 children: [
-                                                                                                  Icon(
-                                                                                                    Icons.add,
-                                                                                                    color: Colors.white,
-                                                                                                    size: width * 0.04,
+                                                                                                  Container(
+                                                                                                    // color: Colors.red,
+                                                                                                    height: height * 0.1,
+                                                                                                    width: height * 0.1,
+                                                                                                  ),
+                                                                                                  Container(
+                                                                                                    height: width * 0.08,
+                                                                                                    width: width * 0.08,
+                                                                                                    decoration: const BoxDecoration(
+                                                                                                      color: Color(0xff55A1FF),
+                                                                                                      shape: BoxShape.circle,
+                                                                                                    ),
+                                                                                                    alignment: Alignment.center,
+                                                                                                    child: Wrap(
+                                                                                                      children: [
+                                                                                                        Icon(
+                                                                                                          Icons.add,
+                                                                                                          color: Colors.white,
+                                                                                                          size: width * 0.04,
+                                                                                                        ),
+                                                                                                      ],
+                                                                                                    ),
                                                                                                   ),
                                                                                                 ],
                                                                                               ),
-                                                                                            ),
-                                                                                          ],
+                                                                                            ],
+                                                                                          ),
                                                                                         ),
-                                                                                      ],
-                                                                                    ),
-                                                                                  ),
                                                                                 )
                                                                               : Container(
                                                                                   decoration: BoxDecoration(
@@ -1337,8 +1384,9 @@ class NewsScreen extends StatelessWidget {
                                                                                     decoration: InputDecoration(
                                                                                       border: InputBorder.none,
                                                                                       contentPadding: EdgeInsets.only(
-                                                                                        left: width * 0.08,
+                                                                                        left: width * 0.02,
                                                                                         top: height * 0.01,
+                                                                                        bottom: 5,
                                                                                       ),
                                                                                       hintStyle: const TextStyle(
                                                                                         fontFamily: "sfPro",
@@ -1391,6 +1439,22 @@ class NewsScreen extends StatelessWidget {
                                                                             dashboardController.newsImage =
                                                                                 dashboardController.imageData;
 
+                                                                            upload =
+                                                                                true;
+                                                                            updateDialog.call(() {});
+                                                                            await dashboardController.storage.ref("NewsImage/${DateTime.now().millisecond}.png").putData(dashboardController.imageData!).then((p0) async {
+                                                                              dashboardController.url = await p0.ref.getDownloadURL();
+                                                                              dashboardController.update([
+                                                                                'news'
+                                                                              ]);
+                                                                              print('URL ${dashboardController.url}');
+                                                                            });
+                                                                            dashboardController.DetailVideo = VideoPlayerController.network("${dashboardController.url}")
+                                                                              ..initialize().then((_) {});
+
+                                                                            upload =
+                                                                                false;
+                                                                            updateDialog.call(() {});
                                                                             Get.back();
                                                                             dashboardController.update([
                                                                               'dash'
@@ -1415,32 +1479,23 @@ class NewsScreen extends StatelessWidget {
                                                                             'news'
                                                                           ]);
                                                                         },
-                                                                        child:
-                                                                            Container(
-                                                                          decoration:
-                                                                              BoxDecoration(
-                                                                            color:
-                                                                                ColorRes.appColor,
-                                                                            borderRadius:
-                                                                                BorderRadius.circular(
-                                                                              5,
-                                                                            ),
-                                                                          ),
-                                                                          width:
-                                                                              width * 0.8,
-                                                                          height:
-                                                                              height * 0.08,
-                                                                          alignment:
-                                                                              Alignment.center,
-                                                                          child:
-                                                                              Text(
-                                                                            "Next",
-                                                                            style: TextStyle(
-                                                                                fontSize: height * 0.035,
-                                                                                fontWeight: FontWeight.w600,
-                                                                                color: Colors.white),
-                                                                          ),
-                                                                        ),
+                                                                        child: upload
+                                                                            ? const Center(child: CircularProgressIndicator())
+                                                                            : Container(
+                                                                                decoration: BoxDecoration(
+                                                                                  color: ColorRes.appColor,
+                                                                                  borderRadius: BorderRadius.circular(
+                                                                                    5,
+                                                                                  ),
+                                                                                ),
+                                                                                width: width * 0.8,
+                                                                                height: height * 0.08,
+                                                                                alignment: Alignment.center,
+                                                                                child: Text(
+                                                                                  "Next",
+                                                                                  style: TextStyle(fontSize: height * 0.035, fontWeight: FontWeight.w600, color: Colors.white),
+                                                                                ),
+                                                                              ),
                                                                       ),
                                                                       SizedBox(
                                                                         height: height *

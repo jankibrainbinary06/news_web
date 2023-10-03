@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +8,7 @@ import 'package:news_web_app/screens/dashboard_screen/dashboard_screen.dart';
 import 'package:news_web_app/screens/login_screen/login_screen.dart';
 import 'package:news_web_app/utils/color_res.dart';
 import 'Services/Shared_pref_services/pref_service.dart';
+import 'demo.dart';
 
 Future<void> main() async {
   await PrefService.init();
@@ -45,9 +48,7 @@ class MyApp extends StatelessWidget {
           backgroundColor: ColorRes.datePicker,
         ),
       ),
-      home: PrefService.getBool('isLogged')
-          ? const DashBoardScreen()
-          : const LoginScreen(),
+      home: const DashBoardScreen() /*  VideoPlayerScreen()*/,
     );
   }
 }

@@ -1,33 +1,40 @@
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+/*
 import 'package:flutter/material.dart';
+import 'package:video_player/video_player.dart';
 
-class ImageFromFirebaseStorage extends StatefulWidget {
+void main() => runApp(MyApp());
+
+class MyApp extends StatelessWidget {
   @override
-  _ImageFromFirebaseStorageState createState() =>
-      _ImageFromFirebaseStorageState();
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Network Video Player Demo',
+      home: VideoPlayerScreen(),
+    );
+  }
 }
 
-class _ImageFromFirebaseStorageState extends State<ImageFromFirebaseStorage> {
-  final FirebaseStorage storage = FirebaseStorage.instance;
-  String? imageUrl; // This will store the image URL once retrieved.
+class VideoPlayerScreen extends StatefulWidget {
+  @override
+  _VideoPlayerScreenState createState() => _VideoPlayerScreenState();
+}
+
+class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
+  late VideoPlayerController _controller;
 
   @override
   void initState() {
     super.initState();
-    getImageFromFirebaseStorage();
+    _controller = VideoPlayerController.network(
+      'https://firebasestorage.googleapis.com/v0/b/news-app-c50bf.appspot.com/o/NewsImage%2F145.png?alt=media&token=12dd77f7-6ec3-465c-bc02-fa0f6c84bee4',
+    )..initialize().then((_) {});
   }
 
-  Future<void> getImageFromFirebaseStorage() async {
-    try {
-      final Reference ref = storage.ref().child(
-          'NewsImage/3Rvtw7tW8tUgBxNlRylo.png'); // Replace 'your_image.jpg' with your image's path.
-      final String downloadUrl = await ref.getDownloadURL();
-      setState(() {
-        imageUrl = downloadUrl;
-      });
-    } catch (e) {
-      print('Error retrieving image: $e');
+  void _toggleVideo() {
+    if (_controller.value.isPlaying) {
+      _controller.pause();
+    } else {
+      _controller.play();
     }
   }
 
@@ -35,14 +42,29 @@ class _ImageFromFirebaseStorageState extends State<ImageFromFirebaseStorage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Firebase Storage Image'),
+        title: Text('Network Video Player Example'),
       ),
       body: Center(
-        child: imageUrl == null
-            ? CircularProgressIndicator() // Show a loading indicator while fetching the image.
-            : Image.network(
-                imageUrl!), // Display the image using Image.network.
+        child: _controller.value.isInitialized
+            ? AspectRatio(
+                aspectRatio: _controller.value.aspectRatio,
+                child: VideoPlayer(_controller),
+              )
+            : CircularProgressIndicator(), // Show a loading spinner until video is initialized
+      ),
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          FloatingActionButton(
+            onPressed: _toggleVideo,
+            child: Icon(
+              _controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
+            ),
+          ),
+          SizedBox(height: 16),
+        ],
       ),
     );
   }
 }
+*/
