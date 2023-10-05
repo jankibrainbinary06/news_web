@@ -14,6 +14,8 @@ class DashboardController extends GetxController {
   VideoPlayerController? VideoCntrl;
   VideoPlayerController? DetailVideo;
 
+  List delete = ['Yes', 'No'];
+
   var newsId;
   bool isVideo = false;
   bool isLoading = false;
@@ -25,6 +27,8 @@ class DashboardController extends GetxController {
   int? subIndex;
   var imagedocid;
   String? url;
+
+  int? delete1;
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
@@ -44,7 +48,7 @@ class DashboardController extends GetxController {
   int? indexOfDropDown;
 
   List newsData = [];
-
+  bool obSecure = true;
   TextEditingController categoryController = TextEditingController();
   TextEditingController subCategoryController = TextEditingController();
   TextEditingController editCategoryController = TextEditingController();
@@ -78,7 +82,7 @@ class DashboardController extends GetxController {
 
   List categoryList = ["1", "2"];
   int idindex = 0;
-
+  String? editImg = '';
   String? headline = '';
   String? channel = '';
   String? date = '';

@@ -105,7 +105,7 @@ class NewsScreen extends StatelessWidget {
                           children: [
                             SizedBox(
                               height: dashboardController.isNewsAdded
-                                  ? Get.height * 0.06
+                                  ? MediaQuery.of(context).size.height * 0.06
                                   : sizingInformation.isMobile
                                       ? Get.height * 0.02
                                       : Get.height * 0.097,
@@ -198,7 +198,187 @@ class NewsScreen extends StatelessWidget {
                                         width: 30,
                                       ),
                                       GestureDetector(
-                                        onTap: () {},
+                                        onTap: () {
+                                          showDialog(
+                                            context: context,
+                                            builder: (context) {
+                                              return BackdropFilter(
+                                                filter: ImageFilter.blur(
+                                                    sigmaX: 2, sigmaY: 2),
+                                                child: Dialog(
+                                                  backgroundColor:
+                                                      Colors.transparent,
+                                                  child: Container(
+                                                    height: height * 0.6,
+                                                    width: width * 2,
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
+                                                      vertical: 10,
+                                                      horizontal: 10,
+                                                    ),
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.white,
+                                                      border: Border.all(
+                                                        color: ColorRes
+                                                            .borderColor,
+                                                        width: 2,
+                                                      ),
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                        5,
+                                                      ),
+                                                    ),
+                                                    child:
+                                                        SingleChildScrollView(
+                                                      child: Column(
+                                                        children: [
+                                                          const SizedBox(
+                                                            height: 2,
+                                                          ),
+                                                          Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .end,
+                                                            children: [
+                                                              Padding(
+                                                                padding: EdgeInsets.only(
+                                                                    top: Get.height *
+                                                                        0.01,
+                                                                    right: Get
+                                                                            .width *
+                                                                        0.01),
+                                                                child: InkWell(
+                                                                  child: Icon(
+                                                                    Icons.close,
+                                                                    color: Colors
+                                                                        .black
+                                                                        .withOpacity(
+                                                                            0.8),
+                                                                    size: 25,
+                                                                  ),
+                                                                  onTap: () {
+                                                                    Get.back();
+                                                                  },
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                          CircleAvatar(
+                                                            maxRadius:
+                                                                width * 0.18,
+                                                            backgroundColor:
+                                                                Colors.white,
+                                                            child: Image.asset(
+                                                              "assets/icons/delete_icon.png",
+                                                            ),
+                                                          ),
+                                                          SizedBox(
+                                                            height: Get.height *
+                                                                0.02,
+                                                          ),
+                                                          Text(
+                                                            'Are you sure you want to delete this Category?',
+                                                            style: TextStyle(
+                                                              height: 1.5,
+                                                              color: Colors
+                                                                  .black
+                                                                  .withOpacity(
+                                                                      0.8),
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w900,
+                                                              fontSize:
+                                                                  textHeight *
+                                                                      0.04,
+                                                              fontFamily:
+                                                                  "sfPro",
+                                                            ),
+                                                            textAlign: TextAlign
+                                                                .center,
+                                                          ),
+                                                          SizedBox(
+                                                            height: Get.height *
+                                                                0.03,
+                                                          ),
+                                                          GestureDetector(
+                                                            onTap: () {
+                                                              dashboardController
+                                                                  .editHeadlineC
+                                                                  .clear();
+                                                              dashboardController
+                                                                  .editChannelC
+                                                                ..clear();
+                                                              dashboardController
+                                                                  .editTimeC
+                                                                  .clear();
+                                                              dashboardController
+                                                                  .editDateC
+                                                                  .clear();
+                                                              dashboardController
+                                                                  .editCityC
+                                                                  .clear();
+                                                              dashboardController
+                                                                  .editStateC
+                                                                  .clear();
+                                                              dashboardController
+                                                                  .editDesC
+                                                                  .clear();
+                                                              dashboardController
+                                                                  .editTopicC
+                                                                  .clear();
+
+                                                              controller.update(
+                                                                  ['news']);
+
+                                                              Get.back();
+                                                            },
+                                                            child: Container(
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                color: ColorRes
+                                                                    .appColor,
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                  5,
+                                                                ),
+                                                              ),
+                                                              width:
+                                                                  width * 0.75,
+                                                              height:
+                                                                  height * 0.09,
+                                                              alignment:
+                                                                  Alignment
+                                                                      .center,
+                                                              child: Text(
+                                                                "Delete",
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontSize:
+                                                                      height *
+                                                                          0.035,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600,
+                                                                  color: Colors
+                                                                      .white,
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          ),
+                                                          SizedBox(
+                                                            height:
+                                                                height * 0.02,
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                          );
+                                        },
                                         child: Image.asset(
                                           AssetRes.delete,
                                           height: sizingInformation.isMobile
@@ -354,13 +534,11 @@ class NewsScreen extends StatelessWidget {
                                                                               [
                                                                               'category']
                                                                           .toString(),
-                                                                      style: const TextStyle(
-                                                                          fontSize:
-                                                                              18,
-                                                                          fontWeight: FontWeight
-                                                                              .normal,
-                                                                          color:
-                                                                              Colors.black),
+                                                                      style:
+                                                                          const TextStyle(
+                                                                        fontSize:
+                                                                            18,
+                                                                      ),
                                                                     ),
                                                                     const Spacer(),
                                                                   ],
@@ -368,7 +546,6 @@ class NewsScreen extends StatelessWidget {
                                                                 onTap: () {
                                                                   dashboardController
                                                                       .showNewsIndex = y;
-
                                                                   dashboardController
                                                                           .imagedocid =
                                                                       snapshot
@@ -1449,8 +1626,10 @@ class NewsScreen extends StatelessWidget {
                                                                               ]);
                                                                               print('URL ${dashboardController.url}');
                                                                             });
-                                                                            dashboardController.DetailVideo = VideoPlayerController.network("${dashboardController.url}")
-                                                                              ..initialize().then((_) {});
+                                                                            if (dashboardController.type ==
+                                                                                'mp4') {
+                                                                              dashboardController.DetailVideo = VideoPlayerController.network("${dashboardController.url}")..initialize().then((_) {});
+                                                                            }
 
                                                                             upload =
                                                                                 false;

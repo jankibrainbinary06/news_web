@@ -22,6 +22,7 @@ editNewsPopup(
     builder: (context) {
       return StatefulBuilder(
         builder: (context, updateDialog) {
+          updateDialog.call(() {});
           return BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
             child: Dialog(
@@ -91,38 +92,47 @@ editNewsPopup(
                           SizedBox(
                             height: Get.height * 0.02,
                           ),
-                          dashboardController.newsImage == null
-                              ? Container(
-                                  height: Get.height * 0.25,
-                                  width: Get.width * 0.2,
-                                  decoration: BoxDecoration(
-                                    color: Colors.green,
-                                    borderRadius: BorderRadius.circular(5),
-                                  ),
-                                )
-                              : Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(
-                                      10,
-                                    ),
-                                    border: Border.all(
-                                        color: ColorRes.newsborder, width: 1),
-                                  ),
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(
-                                      10,
-                                    ),
-                                    child: Image.memory(
-                                      Uint8List.fromList(
-                                          dashboardController.newsImage!),
-                                      width: width * 0.8,
-                                      height: sizingInformation.isDesktop
-                                          ? height * 0.24
-                                          : height * 0.14,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                ),
+                          Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(
+                                10,
+                              ),
+                              border: Border.all(
+                                  color: ColorRes.newsborder, width: 1),
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(
+                                10,
+                              ),
+                              child: dashboardController.type == 'mp4'
+                                  ? SizedBox(
+                                      height: height * 0.3,
+                                      width: width * 1,
+                                      child: Image.asset(
+                                        fit: BoxFit.fill,
+                                        AssetRes.videoThumbnail,
+                                      ),
+                                    )
+                                  : dashboardController.editImg!.isNotEmpty
+                                      ? SizedBox(
+                                          height: height * 0.3,
+                                          width: width * 1,
+                                          child: Image.network(
+                                            fit: BoxFit.fill,
+                                            dashboardController.editImg!,
+                                          ),
+                                        )
+                                      : Image.memory(
+                                          Uint8List.fromList(
+                                              dashboardController.newsImage!),
+                                          width: width * 0.9,
+                                          height: sizingInformation.isDesktop
+                                              ? height * 0.24
+                                              : height * 0.14,
+                                          fit: BoxFit.cover,
+                                        ),
+                            ),
+                          ),
                           SizedBox(
                             height: height * 0.03,
                           ),

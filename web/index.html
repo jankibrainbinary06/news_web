@@ -32,8 +32,13 @@
   <title>news_web_app</title>
   <link rel="manifest" href="manifest.json">
 
+<!--  <script type="text/javascript">-->
+<!--      window.flutterWebRenderer = "html";-->
+<!--  </script>-->
+
   <script>
     // The value below is injected by flutter build, do not touch.
+     window.flutterWebRenderer = '';
     const serviceWorkerVersion = null;
   </script>
   <!-- This script adds the flutter initialization JS code -->
@@ -77,9 +82,6 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
-</script>
-  <script type="text/javascript">
-    window.flutterWebRenderer = "html";
 </script>
 </body>
 </html>

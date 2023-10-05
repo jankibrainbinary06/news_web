@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -35,6 +33,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    final isLogged = PrefService.getBool('isLogged');
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'News Admin Panel',
@@ -48,7 +47,7 @@ class MyApp extends StatelessWidget {
           backgroundColor: ColorRes.datePicker,
         ),
       ),
-      home: const DashBoardScreen() /*  VideoPlayerScreen()*/,
+      home: isLogged ? const DashBoardScreen() : const LoginScreen(),
     );
   }
 }

@@ -239,6 +239,51 @@ class NewsDetail extends StatelessWidget {
                                 children: [
                                   InkWell(
                                     onTap: () {
+                                      dashboardController.editImg =
+                                          data['subcategory'][
+                                                  dashboardController
+                                                      .indexOfDropDown]['Data']
+                                              ['ImageUrl'];
+                                      dashboardController.editHeadlineC.text =
+                                          data['subcategory'][
+                                                  dashboardController
+                                                      .indexOfDropDown]['Data']
+                                              ['HeadLine'];
+                                      dashboardController.editChannelC.text =
+                                          data['subcategory'][
+                                                  dashboardController
+                                                      .indexOfDropDown]['Data']
+                                              ['ChannelName'];
+                                      dashboardController.editTimeC.text =
+                                          data['subcategory'][
+                                                  dashboardController
+                                                      .indexOfDropDown]['Data']
+                                              ['Time'];
+                                      dashboardController.editDateC.text =
+                                          data['subcategory'][
+                                                  dashboardController
+                                                      .indexOfDropDown]['Data']
+                                              ['Date'];
+                                      dashboardController.editCityC.text =
+                                          data['subcategory'][
+                                                  dashboardController
+                                                      .indexOfDropDown]['Data']
+                                              ['City'];
+                                      dashboardController.editStateC.text =
+                                          data['subcategory'][
+                                                  dashboardController
+                                                      .indexOfDropDown]['Data']
+                                              ['State'];
+                                      dashboardController.editDesC.text =
+                                          data['subcategory'][
+                                                  dashboardController
+                                                      .indexOfDropDown]['Data']
+                                              ['Description'];
+                                      dashboardController.editTopicC.text =
+                                          data['subcategory'][
+                                                  dashboardController
+                                                      .indexOfDropDown]['Data']
+                                              ['Topic'];
                                       editNewsPopup(context, width, height,
                                           textHeight, sizingInformation);
                                     },

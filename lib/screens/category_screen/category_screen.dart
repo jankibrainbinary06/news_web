@@ -1400,31 +1400,70 @@ class CategoryScreen extends StatelessWidget {
                                                                             ]);
                                                                             Get.back();
                                                                           },
-                                                                          child:
-                                                                              Container(
-                                                                            decoration:
-                                                                                BoxDecoration(
-                                                                              color: ColorRes.appColor,
-                                                                              borderRadius: BorderRadius.circular(
-                                                                                5,
-                                                                              ),
-                                                                            ),
-                                                                            width:
-                                                                                width * 0.75,
-                                                                            height:
-                                                                                height * 0.09,
-                                                                            alignment:
-                                                                                Alignment.center,
-                                                                            child:
-                                                                                Text(
-                                                                              "Delete",
-                                                                              style: TextStyle(
-                                                                                fontSize: height * 0.035,
-                                                                                fontWeight: FontWeight.w600,
-                                                                                color: Colors.white,
-                                                                              ),
-                                                                            ),
-                                                                          ),
+                                                                          child: Row(
+                                                                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                                              children: [
+                                                                                InkWell(
+                                                                                  onTap: () async {
+                                                                                    dashboardController.newsData = dashboardController.categoryData['subcategory'];
+                                                                                    dashboardController.newsData.removeAt(index);
+
+                                                                                    await Users.doc(snapshot.data!.docs[dashboardController.idindex].id).update({
+                                                                                      'subcategory': dashboardController.newsData,
+                                                                                    });
+                                                                                    dashboardController.update([
+                                                                                      'category'
+                                                                                    ]);
+                                                                                    dashboardController.update([
+                                                                                      'dash'
+                                                                                    ]);
+                                                                                    Get.back();
+                                                                                  },
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(
+                                                                                      color: ColorRes.appColor,
+                                                                                      borderRadius: BorderRadius.circular(
+                                                                                        5,
+                                                                                      ),
+                                                                                    ),
+                                                                                    width: width * 0.6,
+                                                                                    height: height * 0.09,
+                                                                                    alignment: Alignment.center,
+                                                                                    child: Text(
+                                                                                      "Yes",
+                                                                                      style: TextStyle(
+                                                                                        fontSize: height * 0.035,
+                                                                                        fontWeight: FontWeight.w600,
+                                                                                        color: Colors.white,
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                                InkWell(
+                                                                                  onTap: () {
+                                                                                    Get.back();
+                                                                                  },
+                                                                                  child: Container(
+                                                                                    decoration: BoxDecoration(
+                                                                                      border: Border.all(color: ColorRes.borderColor, width: 1),
+                                                                                      borderRadius: BorderRadius.circular(
+                                                                                        5,
+                                                                                      ),
+                                                                                    ),
+                                                                                    width: width * 0.6,
+                                                                                    height: height * 0.09,
+                                                                                    alignment: Alignment.center,
+                                                                                    child: Text(
+                                                                                      "No",
+                                                                                      style: TextStyle(
+                                                                                        fontSize: height * 0.035,
+                                                                                        fontWeight: FontWeight.w600,
+                                                                                        color: ColorRes.borderColor,
+                                                                                      ),
+                                                                                    ),
+                                                                                  ),
+                                                                                )
+                                                                              ]),
                                                                         ),
                                                                         SizedBox(
                                                                           height:
@@ -1908,49 +1947,70 @@ class CategoryScreen extends StatelessWidget {
                                                                         height: Get.height *
                                                                             0.04,
                                                                       ),
-                                                                      GestureDetector(
-                                                                        onTap:
-                                                                            () async {
-                                                                          await Users.doc(snapshot.data!.docs[index].id)
-                                                                              .delete();
-                                                                          Get.back();
-                                                                          dashboardController
-                                                                              .update([
-                                                                            'category'
-                                                                          ]);
-                                                                          dashboardController
-                                                                              .update([
-                                                                            'dash'
-                                                                          ]);
-                                                                        },
-                                                                        child:
-                                                                            Container(
-                                                                          decoration:
-                                                                              BoxDecoration(
-                                                                            color:
-                                                                                ColorRes.appColor,
-                                                                            borderRadius:
-                                                                                BorderRadius.circular(
-                                                                              5,
+                                                                      Row(
+                                                                        mainAxisAlignment:
+                                                                            MainAxisAlignment.spaceEvenly,
+                                                                        children: [
+                                                                          InkWell(
+                                                                            onTap:
+                                                                                () async {
+                                                                              await Users.doc(snapshot.data!.docs[index].id).delete();
+                                                                              Get.back();
+                                                                              dashboardController.update([
+                                                                                'category'
+                                                                              ]);
+                                                                              dashboardController.update([
+                                                                                'dash'
+                                                                              ]);
+                                                                            },
+                                                                            child:
+                                                                                Container(
+                                                                              decoration: BoxDecoration(
+                                                                                color: ColorRes.appColor,
+                                                                                borderRadius: BorderRadius.circular(
+                                                                                  5,
+                                                                                ),
+                                                                              ),
+                                                                              width: width * 0.6,
+                                                                              height: height * 0.09,
+                                                                              alignment: Alignment.center,
+                                                                              child: Text(
+                                                                                "Yes",
+                                                                                style: TextStyle(
+                                                                                  fontSize: height * 0.035,
+                                                                                  fontWeight: FontWeight.w600,
+                                                                                  color: Colors.white,
+                                                                                ),
+                                                                              ),
                                                                             ),
                                                                           ),
-                                                                          width:
-                                                                              width * 0.72,
-                                                                          height:
-                                                                              height * 0.09,
-                                                                          alignment:
-                                                                              Alignment.center,
-                                                                          child:
-                                                                              Text(
-                                                                            "Delete",
-                                                                            style:
-                                                                                TextStyle(
-                                                                              fontSize: height * 0.035,
-                                                                              fontWeight: FontWeight.w600,
-                                                                              color: Colors.white,
+                                                                          InkWell(
+                                                                            onTap:
+                                                                                () {
+                                                                              Get.back();
+                                                                            },
+                                                                            child:
+                                                                                Container(
+                                                                              decoration: BoxDecoration(
+                                                                                border: Border.all(color: ColorRes.borderColor, width: 1),
+                                                                                borderRadius: BorderRadius.circular(
+                                                                                  5,
+                                                                                ),
+                                                                              ),
+                                                                              width: width * 0.6,
+                                                                              height: height * 0.09,
+                                                                              alignment: Alignment.center,
+                                                                              child: Text(
+                                                                                "No",
+                                                                                style: TextStyle(
+                                                                                  fontSize: height * 0.035,
+                                                                                  fontWeight: FontWeight.w600,
+                                                                                  color: ColorRes.borderColor,
+                                                                                ),
+                                                                              ),
                                                                             ),
-                                                                          ),
-                                                                        ),
+                                                                          )
+                                                                        ],
                                                                       ),
                                                                       SizedBox(
                                                                         height: height *

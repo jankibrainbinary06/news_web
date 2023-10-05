@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:news_web_app/common/common_textfield.dart';
 import 'package:news_web_app/screens/login_screen/login_controller.dart';
+import 'package:news_web_app/screens/news_screen/widgets/edit_news_popup.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
 import '../../common/text_styles.dart';
@@ -115,17 +116,20 @@ class LoginScreen extends StatelessWidget {
                                       borderRadius: BorderRadius.circular(5),
                                     ),
                                     child: TextField(
+                                      style: TextStyle(
+                                        fontFamily: "sfPro",
+                                        color: Colors.black.withOpacity(0.9),
+                                      ),
                                       controller: controller.emailController,
                                       decoration: InputDecoration(
+                                        border: InputBorder.none,
                                         contentPadding:
                                             const EdgeInsetsDirectional.only(
                                                 top: 20),
                                         hintText: "Enter email ID",
                                         hintStyle: const TextStyle(
                                           fontFamily: "sfPro",
-                                          color: Color(
-                                            0xff333333,
-                                          ),
+                                          color: Color(0xffB3B3B3),
                                         ),
                                         prefixIcon: Padding(
                                           padding: const EdgeInsets.all(15),
@@ -160,15 +164,39 @@ class LoginScreen extends StatelessWidget {
                                       borderRadius: BorderRadius.circular(5),
                                     ),
                                     child: TextField(
+                                      obscureText: dashboardController.obSecure,
+                                      style: TextStyle(
+                                        fontFamily: "sfPro",
+                                        color: Colors.black.withOpacity(0.9),
+                                      ),
                                       controller: controller.passwordController,
                                       decoration: InputDecoration(
+                                        suffixIcon: dashboardController.obSecure
+                                            ? InkWell(
+                                                onTap: () {
+                                                  dashboardController.obSecure =
+                                                      false;
+                                                  controller.update(['admin']);
+                                                },
+                                                child: Icon(
+                                                    Icons.visibility_outlined),
+                                              )
+                                            : InkWell(
+                                                onTap: () {
+                                                  dashboardController.obSecure =
+                                                      true;
+                                                  controller.update(['admin']);
+                                                },
+                                                child: Icon(Icons
+                                                    .visibility_off_outlined)),
+                                        border: InputBorder.none,
                                         contentPadding:
                                             const EdgeInsetsDirectional.only(
                                                 top: 20),
                                         hintText: "Enter password",
                                         hintStyle: (const TextStyle(
                                           fontFamily: "sfPro",
-                                          color: Color(0xff333333),
+                                          color: Color(0xffB3B3B3),
                                         )),
                                         prefixIcon: Padding(
                                           padding: const EdgeInsets.all(15),

@@ -219,97 +219,67 @@ class DashBoardScreen extends StatelessWidget {
                                     ),
                                     Row(
                                       mainAxisAlignment:
-                                          MainAxisAlignment.center,
+                                          MainAxisAlignment.spaceEvenly,
                                       children: [
-                                        GestureDetector(
+                                        InkWell(
                                           onTap: () {
-                                            dashboardController.islogout =
-                                                false;
-
                                             Get.back();
 
-                                            dashboardController
-                                                .update(['dash']);
-                                          },
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                              border: Border.all(
-                                                  color: dashboardController
-                                                              .islogout ==
-                                                          true
-                                                      ? Colors.black
-                                                      : Colors.transparent),
-                                              color: dashboardController
-                                                          .islogout ==
-                                                      true
-                                                  ? Colors.white
-                                                  : ColorRes.appColor,
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                3,
-                                              ),
-                                            ),
-                                            width: width * 0.7,
-                                            height: height * 0.07,
-                                            alignment: Alignment.center,
-                                            child: Text(
-                                              "No",
-                                              style: TextStyle(
-                                                  fontSize: height * 0.028,
-                                                  fontWeight: FontWeight.w600,
-                                                  color: dashboardController
-                                                              .islogout ==
-                                                          true
-                                                      ? Colors.black
-                                                      : Colors.white),
-                                            ),
-                                          ),
-                                        ),
-                                        SizedBox(width: width * 0.05),
-                                        GestureDetector(
-                                          onTap: () {
-                                            dashboardController.islogout = true;
                                             PrefService.setValue(
                                                 'isLogged', false);
-                                            Get.back();
+
                                             Get.to(const LoginScreen());
                                             dashboardController
                                                 .update(['dash']);
                                           },
                                           child: Container(
                                             decoration: BoxDecoration(
-                                              border: Border.all(
-                                                  color: dashboardController
-                                                              .islogout ==
-                                                          false
-                                                      ? Colors.black
-                                                      : Colors.transparent),
-                                              color: dashboardController
-                                                          .islogout ==
-                                                      false
-                                                  ? Colors.white
-                                                  : ColorRes.appColor,
+                                              color: ColorRes.appColor,
                                               borderRadius:
                                                   BorderRadius.circular(
-                                                3,
+                                                5,
                                               ),
                                             ),
-                                            width: width * 0.7,
-                                            height: height * 0.07,
+                                            width: width * 0.6,
+                                            height: height * 0.09,
                                             alignment: Alignment.center,
                                             child: Text(
                                               "Yes",
                                               style: TextStyle(
-                                                  fontSize: height * 0.028,
-                                                  fontWeight: FontWeight.w600,
-                                                  color: dashboardController
-                                                              .islogout ==
-                                                          false
-                                                      ? Colors.black
-                                                      : Colors.white),
+                                                fontSize: height * 0.035,
+                                                fontWeight: FontWeight.w600,
+                                                color: Colors.white,
+                                              ),
                                             ),
                                           ),
                                         ),
+                                        InkWell(
+                                          onTap: () {
+                                            Get.back();
+                                          },
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              border: Border.all(
+                                                  color: ColorRes.borderColor,
+                                                  width: 2),
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                5,
+                                              ),
+                                            ),
+                                            width: width * 0.6,
+                                            height: height * 0.09,
+                                            alignment: Alignment.center,
+                                            child: Text(
+                                              "No",
+                                              style: TextStyle(
+                                                fontSize: height * 0.035,
+                                                fontWeight: FontWeight.w600,
+                                                color: ColorRes.borderColor,
+                                              ),
+                                            ),
+                                          ),
+                                        )
                                       ],
                                     ),
                                     SizedBox(
@@ -691,45 +661,102 @@ class DashBoardScreen extends StatelessWidget {
                                                         SizedBox(
                                                           height: height * 0.04,
                                                         ),
-                                                        GestureDetector(
-                                                          onTap: () {
-                                                            Get.back();
+                                                        Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .spaceEvenly,
+                                                          children: [
+                                                            InkWell(
+                                                              onTap: () {
+                                                                Get.back();
 
-                                                            Get.to(
-                                                                const LoginScreen());
-                                                            dashboardController
-                                                                .update(
-                                                                    ['dash']);
-                                                          },
-                                                          child: Container(
-                                                            decoration:
-                                                                BoxDecoration(
-                                                              color: ColorRes
-                                                                  .appColor,
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                3,
+                                                                PrefService
+                                                                    .setValue(
+                                                                        'isLogged',
+                                                                        false);
+
+                                                                Get.to(
+                                                                    const LoginScreen());
+                                                                dashboardController
+                                                                    .update([
+                                                                  'dash'
+                                                                ]);
+                                                              },
+                                                              child: Container(
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  color: ColorRes
+                                                                      .appColor,
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                    5,
+                                                                  ),
+                                                                ),
+                                                                width:
+                                                                    width * 0.6,
+                                                                height: height *
+                                                                    0.09,
+                                                                alignment:
+                                                                    Alignment
+                                                                        .center,
+                                                                child: Text(
+                                                                  "Yes",
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontSize:
+                                                                        height *
+                                                                            0.035,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w600,
+                                                                    color: Colors
+                                                                        .white,
+                                                                  ),
+                                                                ),
                                                               ),
                                                             ),
-                                                            width: width * 0.8,
-                                                            height:
-                                                                height * 0.09,
-                                                            alignment: Alignment
-                                                                .center,
-                                                            child: Text(
-                                                              "LogOut",
-                                                              style: TextStyle(
-                                                                  fontSize:
-                                                                      height *
-                                                                          0.04,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w600,
-                                                                  color: Colors
-                                                                      .white),
-                                                            ),
-                                                          ),
+                                                            InkWell(
+                                                              onTap: () {
+                                                                Get.back();
+                                                              },
+                                                              child: Container(
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  border: Border.all(
+                                                                      color: ColorRes
+                                                                          .borderColor,
+                                                                      width: 2),
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                    5,
+                                                                  ),
+                                                                ),
+                                                                width:
+                                                                    width * 0.6,
+                                                                height: height *
+                                                                    0.09,
+                                                                alignment:
+                                                                    Alignment
+                                                                        .center,
+                                                                child: Text(
+                                                                  "No",
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontSize:
+                                                                        height *
+                                                                            0.035,
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .w600,
+                                                                    color: ColorRes
+                                                                        .borderColor,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            )
+                                                          ],
                                                         ),
                                                         SizedBox(
                                                           height: height * 0.02,
