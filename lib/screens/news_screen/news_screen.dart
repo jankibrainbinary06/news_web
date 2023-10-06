@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print, avoid_function_literals_in_foreach_calls, unused_local_variable, no_leading_underscores_for_local_identifiers
+// ignore_for_file: avoid_print, avoid_function_literals_in_foreach_calls, unused_local_variable, no_leading_underscores_for_local_identifiers, deprecated_member_use
 
 import 'dart:ui';
 import 'package:flutter/material.dart';
@@ -306,7 +306,7 @@ class NewsScreen extends StatelessWidget {
                                                                 0.03,
                                                           ),
                                                           GestureDetector(
-                                                            onTap: () {
+                                                            onTap: () async {
                                                               dashboardController
                                                                   .editHeadlineC
                                                                   .clear();
@@ -332,10 +332,65 @@ class NewsScreen extends StatelessWidget {
                                                                   .editTopicC
                                                                   .clear();
 
+                                                              final String
+                                                                  action =
+                                                                  PrefService
+                                                                      .getString(
+                                                                          'DocumentId');
+                                                              await dashboardController
+                                                                          .Users
+                                                                      .doc(
+                                                                          action)
+                                                                  .get()
+                                                                  .then(
+                                                                      (value) {
+                                                                print(value
+                                                                    .data());
+                                                                dashboardController
+                                                                        .newsData =
+                                                                    value[
+                                                                        'subcategory'];
+                                                              });
+
+                                                              if (dashboardController
+                                                                      .subCNews ==
+                                                                  true) {
+                                                                dashboardController
+                                                                    .newsData
+                                                                    .removeLast();
+                                                              } else {
+                                                                dashboardController
+                                                                    .newsData
+                                                                    .removeAt(
+                                                                        dashboardController
+                                                                            .subIndex!);
+                                                              }
+
+                                                              await dashboardController
+                                                                          .Users
+                                                                      .doc(
+                                                                          action)
+                                                                  .update({
+                                                                'subcategory':
+                                                                    dashboardController
+                                                                        .newsData,
+                                                              });
+                                                              dashboardController
+                                                                      .isCategory =
+                                                                  true;
+                                                              dashboardController
+                                                                      .isTapCategory =
+                                                                  false;
+                                                              dashboardController
+                                                                      .isNews =
+                                                                  false;
+                                                              Get.back();
                                                               controller.update(
                                                                   ['news']);
-
-                                                              Get.back();
+                                                              controller.update(
+                                                                  ['dash']);
+                                                              controller.update(
+                                                                  ['category']);
                                                             },
                                                             child: Container(
                                                               decoration:

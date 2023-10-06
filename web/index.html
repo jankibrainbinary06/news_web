@@ -32,13 +32,8 @@
   <title>news_web_app</title>
   <link rel="manifest" href="manifest.json">
 
-<!--  <script type="text/javascript">-->
-<!--      window.flutterWebRenderer = "html";-->
-<!--  </script>-->
-
   <script>
     // The value below is injected by flutter build, do not touch.
-<!--     window.flutterWebRenderer = '';-->
     const serviceWorkerVersion = null;
   </script>
   <!-- This script adds the flutter initialization JS code -->
@@ -60,6 +55,9 @@
       });
     });
   </script>
+  <script type="text/javascript">
+    window.flutterWebRenderer = "html";
+</script>
   <script type="module">
   // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
@@ -83,5 +81,10 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 </script>
+
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
 </body>
 </html>

@@ -803,6 +803,7 @@ class CategoryScreen extends StatelessWidget {
                                                                                 dashboardController.isNews = true;
                                                                                 Get.back();
                                                                                 dashboardController.isNewsCategory = false;
+                                                                                dashboardController.subCNews = true;
                                                                                 dashboardController.update([
                                                                                   'category'
                                                                                 ]);
