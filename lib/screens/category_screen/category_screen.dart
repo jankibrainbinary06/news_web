@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, non_constant_identifier_names, unused_local_variable, avoid_print, avoid_function_literals_in_foreach_calls
 
 import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -323,8 +323,9 @@ class CategoryScreen extends StatelessWidget {
                                                             dashboardController
                                                                 .newsData
                                                                 .add({
-                                                              "Name":
-                                                                  "${dashboardController.categoryController.text}",
+                                                              "Name": dashboardController
+                                                                  .categoryController
+                                                                  .text,
                                                               "Data": {},
                                                             });
                                                             print(
@@ -710,7 +711,7 @@ class CategoryScreen extends StatelessWidget {
                                                                               ],
                                                                             ),
                                                                             Text(
-                                                                              '${dashboardController.categoryController.text}',
+                                                                              dashboardController.categoryController.text,
                                                                               style: TextStyle(height: 1.5, color: Colors.black.withOpacity(0.8), fontWeight: FontWeight.w900, fontSize: textHeight * 0.045, fontFamily: "sfPro", letterSpacing: 2),
                                                                             ),
                                                                             SizedBox(
@@ -777,26 +778,30 @@ class CategoryScreen extends StatelessWidget {
                                                                                     "category": dashboardController.categoryController.text,
                                                                                     "subcategory": [
                                                                                       {
-                                                                                        "Name": "${dashboardController.subCategoryController.text}",
+                                                                                        "Name": dashboardController.subCategoryController.text,
                                                                                         "Data": {},
                                                                                       }
                                                                                     ],
                                                                                     "DateTime": DateTime.now(),
                                                                                   });
-                                                                                  PrefService.setValue('subcategory', '${dashboardController.subCategoryController.text}');
+                                                                                  PrefService.setValue('subcategory', dashboardController.subCategoryController.text);
                                                                                 }
-                                                                                Users.get().then((value) {
-                                                                                  value.docs.forEach((element) async {
-                                                                                    if (element['category'] == dashboardController.categoryController.text) {
-                                                                                      dashboardController.id = element.id;
-                                                                                      print(dashboardController.id);
-                                                                                      PrefService.setValue('DocumentId', '${dashboardController.id.toString()}');
-                                                                                      dashboardController.update([
-                                                                                        'category'
-                                                                                      ]);
-                                                                                    }
-                                                                                  });
-                                                                                });
+                                                                                Users.get().then(
+                                                                                  (value) {
+                                                                                    value.docs.forEach(
+                                                                                      (element) async {
+                                                                                        if (element['category'] == dashboardController.categoryController.text) {
+                                                                                          dashboardController.id = element.id;
+                                                                                          print(dashboardController.id);
+                                                                                          PrefService.setValue('DocumentId', dashboardController.id.toString());
+                                                                                          dashboardController.update(
+                                                                                            ['category'],
+                                                                                          );
+                                                                                        }
+                                                                                      },
+                                                                                    );
+                                                                                  },
+                                                                                );
                                                                                 dashboardController.subCategoryController.clear();
 
                                                                                 dashboardController.isCategory = false;
@@ -1569,13 +1574,13 @@ class CategoryScreen extends StatelessWidget {
                                                                 .docId =
                                                             snapshot.data!
                                                                 .docs[index].id;
-                                                        final SharedPreferences
-                                                            prefs =
-                                                            await SharedPreferences
-                                                                .getInstance();
-                                                        await prefs.setString(
+
+                                                        PrefService.setValue(
                                                             'DocumentId',
-                                                            '${snapshot.data!.docs[index].id}');
+                                                            snapshot
+                                                                .data!
+                                                                .docs[index]
+                                                                .id);
                                                         dashboardController
                                                                 .categoryData =
                                                             snapshot.data!

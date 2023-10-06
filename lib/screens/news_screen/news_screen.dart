@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print, avoid_function_literals_in_foreach_calls, unused_local_variable, no_leading_underscores_for_local_identifiers, deprecated_member_use
+// ignore_for_file: avoid_print, avoid_function_literals_in_foreach_calls, unused_local_variable, no_leading_underscores_for_local_identifiers, deprecated_member_use, use_build_context_synchronously
 
 import 'dart:ui';
 import 'package:flutter/material.dart';
@@ -8,7 +8,6 @@ import 'package:intl/intl.dart';
 import 'package:news_web_app/Services/Shared_pref_services/pref_service.dart';
 import 'package:news_web_app/common/text_styles.dart';
 import 'package:news_web_app/screens/dashboard_screen/dashboard_controller.dart';
-import 'package:news_web_app/screens/news_screen/widgets/delete_popup.dart';
 import 'package:news_web_app/screens/news_screen/widgets/edit_news_popup.dart';
 import 'package:news_web_app/screens/news_screen/widgets/news_detail.dart';
 import 'package:news_web_app/utils/assets_res.dart';
@@ -598,7 +597,7 @@ class NewsScreen extends StatelessWidget {
                                                                           TextStyle(
                                                                         color: Colors
                                                                             .black
-                                                                            .withOpacity(0.8),
+                                                                            .withOpacity(1),
                                                                         fontSize:
                                                                             18,
                                                                       ),
@@ -1307,7 +1306,7 @@ class NewsScreen extends StatelessWidget {
                                                                                               Stack(
                                                                                                 alignment: Alignment.bottomRight,
                                                                                                 children: [
-                                                                                                  Container(
+                                                                                                  SizedBox(
                                                                                                     // color: Colors.red,
                                                                                                     height: height * 0.1,
                                                                                                     width: height * 0.1,

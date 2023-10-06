@@ -116,6 +116,7 @@ class LoginScreen extends StatelessWidget {
                                       borderRadius: BorderRadius.circular(5),
                                     ),
                                     child: TextField(
+                                      keyboardType: TextInputType.emailAddress,
                                       style: TextStyle(
                                         fontFamily: "sfPro",
                                         color: Colors.black.withOpacity(0.9),
