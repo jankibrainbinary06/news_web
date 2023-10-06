@@ -4,6 +4,7 @@ import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:news_web_app/Services/Shared_pref_services/pref_service.dart';
 import 'package:news_web_app/screens/dashboard_screen/dashboard_controller.dart';
 import 'package:news_web_app/utils/color_res.dart';
 import 'package:responsive_builder/responsive_builder.dart';
@@ -338,17 +339,36 @@ class CategoryScreen extends StatelessWidget {
                                                                   dashboardController
                                                                       .newsData,
                                                             });
+
+                                                            dashboardController
+                                                                    .subCNews =
+                                                                true;
+
+                                                            PrefService.setValue(
+                                                                'subcategory',
+                                                                dashboardController
+                                                                    .categoryController
+                                                                    .text);
                                                             print(
                                                                 dashboardController
                                                                     .idindex);
                                                             dashboardController
+                                                                    .isCategory =
+                                                                false;
+                                                            dashboardController
+                                                                .isNews = true;
+                                                            Get.back();
+                                                            dashboardController
+                                                                    .isNewsCategory =
+                                                                false;
+                                                            dashboardController
                                                                 .update([
                                                               'category'
                                                             ]);
+
                                                             dashboardController
                                                                 .update(
                                                                     ['dash']);
-                                                            Get.back();
                                                           },
                                                           child: Container(
                                                             decoration:
@@ -763,16 +783,14 @@ class CategoryScreen extends StatelessWidget {
                                                                                     ],
                                                                                     "DateTime": DateTime.now(),
                                                                                   });
-                                                                                  final SharedPreferences prefs = await SharedPreferences.getInstance();
-                                                                                  await prefs.setString('subcategory', '${dashboardController.subCategoryController.text}');
+                                                                                  PrefService.setValue('subcategory', '${dashboardController.subCategoryController.text}');
                                                                                 }
                                                                                 Users.get().then((value) {
                                                                                   value.docs.forEach((element) async {
                                                                                     if (element['category'] == dashboardController.categoryController.text) {
                                                                                       dashboardController.id = element.id;
                                                                                       print(dashboardController.id);
-                                                                                      final SharedPreferences prefs = await SharedPreferences.getInstance();
-                                                                                      await prefs.setString('DocumentId', '${dashboardController.id.toString()}');
+                                                                                      PrefService.setValue('DocumentId', '${dashboardController.id.toString()}');
                                                                                       dashboardController.update([
                                                                                         'category'
                                                                                       ]);
@@ -1382,89 +1400,71 @@ class CategoryScreen extends StatelessWidget {
                                                                           height:
                                                                               Get.height * 0.03,
                                                                         ),
-                                                                        GestureDetector(
-                                                                          onTap:
-                                                                              () async {
-                                                                            dashboardController.newsData =
-                                                                                dashboardController.categoryData['subcategory'];
-                                                                            dashboardController.newsData.removeAt(index);
+                                                                        Row(
+                                                                            mainAxisAlignment:
+                                                                                MainAxisAlignment.spaceEvenly,
+                                                                            children: [
+                                                                              InkWell(
+                                                                                onTap: () async {
+                                                                                  dashboardController.newsData = dashboardController.categoryData['subcategory'];
+                                                                                  dashboardController.newsData.removeAt(index);
 
-                                                                            await Users.doc(snapshot.data!.docs[dashboardController.idindex].id).update({
-                                                                              'subcategory': dashboardController.newsData,
-                                                                            });
-                                                                            dashboardController.update([
-                                                                              'category'
-                                                                            ]);
-                                                                            dashboardController.update([
-                                                                              'dash'
-                                                                            ]);
-                                                                            Get.back();
-                                                                          },
-                                                                          child: Row(
-                                                                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                                                              children: [
-                                                                                InkWell(
-                                                                                  onTap: () async {
-                                                                                    dashboardController.newsData = dashboardController.categoryData['subcategory'];
-                                                                                    dashboardController.newsData.removeAt(index);
-
-                                                                                    await Users.doc(snapshot.data!.docs[dashboardController.idindex].id).update({
-                                                                                      'subcategory': dashboardController.newsData,
-                                                                                    });
-                                                                                    dashboardController.update([
-                                                                                      'category'
-                                                                                    ]);
-                                                                                    dashboardController.update([
-                                                                                      'dash'
-                                                                                    ]);
-                                                                                    Get.back();
-                                                                                  },
-                                                                                  child: Container(
-                                                                                    decoration: BoxDecoration(
-                                                                                      color: ColorRes.appColor,
-                                                                                      borderRadius: BorderRadius.circular(
-                                                                                        5,
-                                                                                      ),
+                                                                                  await Users.doc(snapshot.data!.docs[dashboardController.idindex].id).update({
+                                                                                    'subcategory': dashboardController.newsData,
+                                                                                  });
+                                                                                  dashboardController.update([
+                                                                                    'category'
+                                                                                  ]);
+                                                                                  dashboardController.update([
+                                                                                    'dash'
+                                                                                  ]);
+                                                                                  Get.back();
+                                                                                },
+                                                                                child: Container(
+                                                                                  decoration: BoxDecoration(
+                                                                                    color: ColorRes.appColor,
+                                                                                    borderRadius: BorderRadius.circular(
+                                                                                      5,
                                                                                     ),
-                                                                                    width: width * 0.6,
-                                                                                    height: height * 0.09,
-                                                                                    alignment: Alignment.center,
-                                                                                    child: Text(
-                                                                                      "Yes",
-                                                                                      style: TextStyle(
-                                                                                        fontSize: height * 0.035,
-                                                                                        fontWeight: FontWeight.w600,
-                                                                                        color: Colors.white,
-                                                                                      ),
+                                                                                  ),
+                                                                                  width: width * 0.6,
+                                                                                  height: height * 0.09,
+                                                                                  alignment: Alignment.center,
+                                                                                  child: Text(
+                                                                                    "Yes",
+                                                                                    style: TextStyle(
+                                                                                      fontSize: height * 0.035,
+                                                                                      fontWeight: FontWeight.w600,
+                                                                                      color: Colors.white,
                                                                                     ),
                                                                                   ),
                                                                                 ),
-                                                                                InkWell(
-                                                                                  onTap: () {
-                                                                                    Get.back();
-                                                                                  },
-                                                                                  child: Container(
-                                                                                    decoration: BoxDecoration(
-                                                                                      border: Border.all(color: ColorRes.borderColor, width: 1),
-                                                                                      borderRadius: BorderRadius.circular(
-                                                                                        5,
-                                                                                      ),
-                                                                                    ),
-                                                                                    width: width * 0.6,
-                                                                                    height: height * 0.09,
-                                                                                    alignment: Alignment.center,
-                                                                                    child: Text(
-                                                                                      "No",
-                                                                                      style: TextStyle(
-                                                                                        fontSize: height * 0.035,
-                                                                                        fontWeight: FontWeight.w600,
-                                                                                        color: ColorRes.borderColor,
-                                                                                      ),
+                                                                              ),
+                                                                              InkWell(
+                                                                                onTap: () {
+                                                                                  Get.back();
+                                                                                },
+                                                                                child: Container(
+                                                                                  decoration: BoxDecoration(
+                                                                                    border: Border.all(color: ColorRes.borderColor, width: 1),
+                                                                                    borderRadius: BorderRadius.circular(
+                                                                                      5,
                                                                                     ),
                                                                                   ),
-                                                                                )
-                                                                              ]),
-                                                                        ),
+                                                                                  width: width * 0.6,
+                                                                                  height: height * 0.09,
+                                                                                  alignment: Alignment.center,
+                                                                                  child: Text(
+                                                                                    "No",
+                                                                                    style: TextStyle(
+                                                                                      fontSize: height * 0.035,
+                                                                                      fontWeight: FontWeight.w600,
+                                                                                      color: ColorRes.borderColor,
+                                                                                    ),
+                                                                                  ),
+                                                                                ),
+                                                                              )
+                                                                            ]),
                                                                         SizedBox(
                                                                           height:
                                                                               height * 0.02,

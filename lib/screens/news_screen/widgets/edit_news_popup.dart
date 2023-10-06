@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:news_web_app/screens/dashboard_screen/dashboard_controller.dart';
 import 'package:news_web_app/utils/assets_res.dart';
 
+import '../../../Services/Shared_pref_services/pref_service.dart';
 import '../../../utils/color_res.dart';
 
 DashboardController dashboardController = Get.put(DashboardController());
@@ -16,6 +17,7 @@ editNewsPopup(
   double height,
   double textHeight,
   var sizingInformation,
+  var from,
 ) {
   return showDialog(
     context: context,
@@ -567,7 +569,7 @@ editNewsPopup(
                         height: Get.height * 0.05,
                       ),
                       GestureDetector(
-                        onTap: () {
+                        onTap: () async {
                           dashboardController.headline =
                               dashboardController.editHeadlineC.text;
                           dashboardController.description =
@@ -584,6 +586,47 @@ editNewsPopup(
                               dashboardController.editCityC.text;
                           dashboardController.channel =
                               dashboardController.editChannelC.text;
+
+                          if (from == 'NewsDetail') {
+                            final String subcategory =
+                                PrefService.getString('subcategory');
+
+                            await dashboardController.Users.doc(
+                                    dashboardController.imagedocid)
+                                .get()
+                                .then((value) {
+                              print(value.data());
+                              dashboardController.newsData =
+                                  value['subcategory'];
+                            });
+
+                            dashboardController.newsData
+                                .removeAt(dashboardController.indexOfDropDown!);
+                            dashboardController.newsData
+                                .insert(dashboardController.indexOfDropDown!, {
+                              "Name": subcategory,
+                              "Data": {
+                                "HeadLine": dashboardController.headline,
+                                "ChannelName": dashboardController.channel,
+                                "Date": dashboardController.date,
+                                "Time": dashboardController.time,
+                                "State": dashboardController.state,
+                                "City": dashboardController.city,
+                                "Topic": dashboardController.topic,
+                                "Description": dashboardController.description,
+                                "ImageUrl": dashboardController.editImg,
+                                "AssetType": dashboardController.assetType,
+                              }
+                            });
+
+                            print("${dashboardController.newsData}");
+
+                            await dashboardController.Users.doc(
+                                    dashboardController.imagedocid)
+                                .update({
+                              'subcategory': dashboardController.newsData,
+                            });
+                          }
 
                           Get.back();
                           dashboardController.update(['dash']);

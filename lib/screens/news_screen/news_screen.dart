@@ -1,20 +1,20 @@
-// ignore_for_file: avoid_print, avoid_function_literals_in_foreach_calls
+// ignore_for_file: avoid_print, avoid_function_literals_in_foreach_calls, unused_local_variable, no_leading_underscores_for_local_identifiers
 
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:news_web_app/Services/Shared_pref_services/pref_service.dart';
 import 'package:news_web_app/common/text_styles.dart';
 import 'package:news_web_app/screens/dashboard_screen/dashboard_controller.dart';
+import 'package:news_web_app/screens/news_screen/widgets/delete_popup.dart';
 import 'package:news_web_app/screens/news_screen/widgets/edit_news_popup.dart';
 import 'package:news_web_app/screens/news_screen/widgets/news_detail.dart';
 import 'package:news_web_app/utils/assets_res.dart';
 import 'package:news_web_app/utils/color_res.dart';
 import 'package:responsive_builder/responsive_builder.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:video_player/video_player.dart';
-import '../../demo.dart';
 import '../../utils/string_res.dart';
 
 class NewsScreen extends StatelessWidget {
@@ -23,7 +23,6 @@ class NewsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     DashboardController dashboardController = Get.put(DashboardController());
-    var selectedItem = '';
     double width = 0;
     double height = 0;
     double textHeight = 0;
@@ -171,8 +170,14 @@ class NewsScreen extends StatelessWidget {
                                           dashboardController.editTopicC.text =
                                               dashboardController.topic!;
 
-                                          editNewsPopup(context, width, height,
-                                              textHeight, sizingInformation);
+                                          editNewsPopup(
+                                            context,
+                                            width,
+                                            height,
+                                            textHeight,
+                                            sizingInformation,
+                                            'NewsScreen',
+                                          );
                                         },
                                         child: Image.asset(
                                           AssetRes.edit,
@@ -307,7 +312,7 @@ class NewsScreen extends StatelessWidget {
                                                                   .clear();
                                                               dashboardController
                                                                   .editChannelC
-                                                                ..clear();
+                                                                  .clear();
                                                               dashboardController
                                                                   .editTimeC
                                                                   .clear();
@@ -535,7 +540,10 @@ class NewsScreen extends StatelessWidget {
                                                                               'category']
                                                                           .toString(),
                                                                       style:
-                                                                          const TextStyle(
+                                                                          TextStyle(
+                                                                        color: Colors
+                                                                            .black
+                                                                            .withOpacity(0.8),
                                                                         fontSize:
                                                                             18,
                                                                       ),
@@ -637,6 +645,11 @@ class NewsScreen extends StatelessWidget {
                                                                           );
                                                                         },
                                                                       );
+                                                                      PrefService.setValue(
+                                                                          'subcategory',
+                                                                          dashboardController
+                                                                              .dropItems[y]['subCategory'][index]['Name']
+                                                                              .toString());
                                                                     },
                                                                     child: Text(dashboardController
                                                                         .dropItems[
@@ -743,10 +756,6 @@ class NewsScreen extends StatelessWidget {
                                                                         .circular(
                                                                   5,
                                                                 ),
-                                                                // border: Border.all(
-                                                                //     color: ColorRes
-                                                                //         .newsborder,
-                                                                //     width: 1),
                                                               ),
                                                               child: ClipRRect(
                                                                 borderRadius:
@@ -846,40 +855,18 @@ class NewsScreen extends StatelessWidget {
                                                           dashboardController
                                                                   .isNewsAdded =
                                                               false;
-                                                          final SharedPreferences
-                                                              prefs =
-                                                              await SharedPreferences
-                                                                  .getInstance();
-                                                          final String? action =
-                                                              prefs.getString(
+
+                                                          final String action =
+                                                              PrefService.getString(
                                                                   'DocumentId');
 
-                                                          final String?
+                                                          final String
                                                               subcategory =
-                                                              prefs.getString(
+                                                              PrefService.getString(
                                                                   'subcategory');
 
                                                           print(
                                                               "DOC ID-------------->$action");
-
-                                                          await dashboardController
-                                                              .storage
-                                                              .ref(
-                                                                  "NewsImage/${DateTime.now().millisecond}.png")
-                                                              .putData(
-                                                                  dashboardController
-                                                                      .imageData!)
-                                                              .then((p0) async {
-                                                            dashboardController
-                                                                    .url =
-                                                                await p0.ref
-                                                                    .getDownloadURL();
-                                                            dashboardController
-                                                                .update(
-                                                                    ['news']);
-                                                            print(
-                                                                'URL ${dashboardController.url}');
-                                                          });
 
                                                           await dashboardController
                                                                       .Users
@@ -901,65 +888,111 @@ class NewsScreen extends StatelessWidget {
                                                               dashboardController
                                                                   .subIndex);
 
-                                                          dashboardController
-                                                                      .subIndex ==
-                                                                  null
-                                                              ? dashboardController
-                                                                  .newsData
-                                                                  .removeAt(0)
-                                                              : dashboardController
-                                                                  .newsData
-                                                                  .removeAt(
-                                                                      dashboardController
-                                                                          .subIndex!);
-
                                                           print(
                                                               dashboardController
                                                                   .newsData);
 
-                                                          dashboardController.newsData.insert(
-                                                              dashboardController
-                                                                          .subIndex ==
-                                                                      null
-                                                                  ? 0
-                                                                  : dashboardController
-                                                                      .subIndex!,
-                                                              {
-                                                                "Name":
-                                                                    subcategory,
-                                                                "Data": {
-                                                                  "HeadLine":
-                                                                      dashboardController
-                                                                          .headline,
-                                                                  "ChannelName":
-                                                                      dashboardController
-                                                                          .channel,
-                                                                  "Date":
-                                                                      dashboardController
-                                                                          .date,
-                                                                  "Time":
-                                                                      dashboardController
-                                                                          .time,
-                                                                  "State":
-                                                                      dashboardController
-                                                                          .state,
-                                                                  "City":
-                                                                      dashboardController
-                                                                          .city,
-                                                                  "Topic":
-                                                                      dashboardController
-                                                                          .topic,
-                                                                  "Description":
-                                                                      dashboardController
-                                                                          .description,
-                                                                  "ImageUrl":
-                                                                      dashboardController
-                                                                          .url,
-                                                                  "AssetType":
-                                                                      dashboardController
-                                                                          .type,
-                                                                }
-                                                              });
+                                                          if (dashboardController
+                                                                  .subCNews ==
+                                                              true) {
+                                                            dashboardController
+                                                                .newsData
+                                                                .removeLast();
+
+                                                            dashboardController
+                                                                .newsData
+                                                                .add({
+                                                              "Name":
+                                                                  subcategory,
+                                                              "Data": {
+                                                                "HeadLine":
+                                                                    dashboardController
+                                                                        .headline,
+                                                                "ChannelName":
+                                                                    dashboardController
+                                                                        .channel,
+                                                                "Date":
+                                                                    dashboardController
+                                                                        .date,
+                                                                "Time":
+                                                                    dashboardController
+                                                                        .time,
+                                                                "State":
+                                                                    dashboardController
+                                                                        .state,
+                                                                "City":
+                                                                    dashboardController
+                                                                        .city,
+                                                                "Topic":
+                                                                    dashboardController
+                                                                        .topic,
+                                                                "Description":
+                                                                    dashboardController
+                                                                        .description,
+                                                                "ImageUrl":
+                                                                    dashboardController
+                                                                        .url,
+                                                                "AssetType":
+                                                                    dashboardController
+                                                                        .type,
+                                                              }
+                                                            });
+                                                          } else {
+                                                            dashboardController
+                                                                        .subIndex ==
+                                                                    null
+                                                                ? dashboardController
+                                                                    .newsData
+                                                                    .removeAt(0)
+                                                                : dashboardController
+                                                                    .newsData
+                                                                    .removeAt(
+                                                                        dashboardController
+                                                                            .subIndex!);
+                                                            dashboardController.newsData.insert(
+                                                                dashboardController
+                                                                            .subIndex ==
+                                                                        null
+                                                                    ? 0
+                                                                    : dashboardController
+                                                                        .subIndex!,
+                                                                {
+                                                                  "Name":
+                                                                      subcategory,
+                                                                  "Data": {
+                                                                    "HeadLine":
+                                                                        dashboardController
+                                                                            .headline,
+                                                                    "ChannelName":
+                                                                        dashboardController
+                                                                            .channel,
+                                                                    "Date":
+                                                                        dashboardController
+                                                                            .date,
+                                                                    "Time":
+                                                                        dashboardController
+                                                                            .time,
+                                                                    "State":
+                                                                        dashboardController
+                                                                            .state,
+                                                                    "City":
+                                                                        dashboardController
+                                                                            .city,
+                                                                    "Topic":
+                                                                        dashboardController
+                                                                            .topic,
+                                                                    "Description":
+                                                                        dashboardController
+                                                                            .description,
+                                                                    "ImageUrl":
+                                                                        dashboardController
+                                                                            .url,
+                                                                    "AssetType":
+                                                                        dashboardController
+                                                                            .type,
+                                                                  }
+                                                                });
+                                                          }
 
                                                           print(
                                                               "${dashboardController.newsData}");
@@ -975,6 +1008,7 @@ class NewsScreen extends StatelessWidget {
                                                           dashboardController
                                                                   .isLoading =
                                                               false;
+
                                                           dashboardController
                                                               .update(['dash']);
                                                           dashboardController
@@ -1015,6 +1049,67 @@ class NewsScreen extends StatelessWidget {
                                               )
                                             : GestureDetector(
                                                 onTap: () {
+                                                  if (dashboardController
+                                                          .addHeadLineController
+                                                          .isNull ||
+                                                      dashboardController
+                                                          .channelController
+                                                          .isNull ||
+                                                      dashboardController
+                                                          .stateController
+                                                          .isNull ||
+                                                      dashboardController
+                                                          .cityController
+                                                          .isNull ||
+                                                      dashboardController
+                                                          .dateController
+                                                          .isNull ||
+                                                      dashboardController
+                                                          .timeController
+                                                          .isNull ||
+                                                      dashboardController
+                                                          .topicController
+                                                          .isNull ||
+                                                      dashboardController
+                                                          .desController
+                                                          .isNull ||
+                                                      dashboardController
+                                                          .imageData.isNull ||
+                                                      dashboardController
+                                                          .result!
+                                                          .files
+                                                          .isNull) {
+                                                  } else {
+                                                    dashboardController
+                                                        .addHeadLineController
+                                                        .clear();
+                                                    dashboardController
+                                                        .channelController
+                                                        .clear();
+                                                    dashboardController
+                                                        .stateController
+                                                        .clear();
+                                                    dashboardController
+                                                        .cityController
+                                                        .clear();
+                                                    dashboardController
+                                                        .dateController
+                                                        .clear();
+                                                    dashboardController
+                                                        .timeController
+                                                        .clear();
+                                                    dashboardController
+                                                        .topicController
+                                                        .clear();
+                                                    dashboardController
+                                                        .desController
+                                                        .clear();
+                                                    dashboardController
+                                                        .imageData = null;
+                                                    dashboardController
+                                                        .result!.files
+                                                        .clear();
+                                                  }
                                                   showDialog(
                                                     context: context,
                                                     builder: (context) {
@@ -1626,7 +1721,7 @@ class NewsScreen extends StatelessWidget {
                                                                               ]);
                                                                               print('URL ${dashboardController.url}');
                                                                             });
-                                                                            if (dashboardController.type ==
+                                                                            if (dashboardController.result!.files.first.extension ==
                                                                                 'mp4') {
                                                                               dashboardController.DetailVideo = VideoPlayerController.network("${dashboardController.url}")..initialize().then((_) {});
                                                                             }
@@ -1635,6 +1730,7 @@ class NewsScreen extends StatelessWidget {
                                                                                 false;
                                                                             updateDialog.call(() {});
                                                                             Get.back();
+
                                                                             dashboardController.update([
                                                                               'dash'
                                                                             ]);

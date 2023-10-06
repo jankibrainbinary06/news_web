@@ -386,8 +386,14 @@ class DashBoardScreen extends StatelessWidget {
                                           onTap: () {
                                             dashboardController.isTapCategory =
                                                 false;
+                                            dashboardController.isCategory =
+                                                true;
+                                            dashboardController.isNewsCategory =
+                                                true;
                                             dashboardController.isNewsDetail =
                                                 false;
+                                            dashboardController.isNews = false;
+
                                             dashboardController
                                                 .update(['dash']);
                                             dashboardController

@@ -75,14 +75,15 @@ class DashboardController extends GetxController {
   bool isTapCategory = false;
   bool isNewsAdded = false;
   bool isNewsCategory = true;
-  bool isDrop = false;
   bool isNewsDetail = false;
+  bool subCNews = false;
 
   int selectedIndex = 0;
 
   List categoryList = ["1", "2"];
   int idindex = 0;
   String? editImg = '';
+  String? assetType = '';
   String? headline = '';
   String? channel = '';
   String? date = '';

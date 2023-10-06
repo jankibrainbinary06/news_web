@@ -1,11 +1,11 @@
+// ignore_for_file: unused_local_variable, avoid_print, deprecated_member_use, no_leading_underscores_for_local_identifiers
+
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:news_web_app/screens/dashboard_screen/dashboard_controller.dart';
 import 'package:news_web_app/screens/news_screen/widgets/delete_popup.dart';
 import 'package:news_web_app/screens/news_screen/widgets/edit_news_popup.dart';
-import 'package:news_web_app/screens/news_screen/widgets/news_detail_controller.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 import 'package:video_player/video_player.dart';
 import '../../../common/text_styles.dart';
@@ -170,8 +170,6 @@ class NewsDetail extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(
                                     5,
                                   ),
-                                  border:
-                                      Border.all(color: Colors.white, width: 1),
                                 ),
                                 child: data['subcategory'][dashboardController
                                                 .indexOfDropDown]['Data']
@@ -195,8 +193,9 @@ class NewsDetail extends StatelessWidget {
                                                           .VideoCntrl!
                                                           .value
                                                           .isPlaying
-                                                      ? Icon(Icons.pause)
-                                                      : Icon(Icons.play_arrow),
+                                                      ? const Icon(Icons.pause)
+                                                      : const Icon(
+                                                          Icons.play_arrow),
                                                 ),
                                               ),
                                             ),
@@ -209,10 +208,12 @@ class NewsDetail extends StatelessWidget {
                                                         .indexOfDropDown]
                                                 ['Data']['ImageUrl'] ??
                                             "",
-                                        placeholder: (context, url) => Center(
-                                            child: CircularProgressIndicator()),
+                                        placeholder: (context, url) =>
+                                            const Center(
+                                                child:
+                                                    CircularProgressIndicator()),
                                         errorWidget: (context, url, error) =>
-                                            Icon(Icons.error),
+                                            const Icon(Icons.error),
                                       ),
                               ),
                               SizedBox(
@@ -244,6 +245,11 @@ class NewsDetail extends StatelessWidget {
                                                   dashboardController
                                                       .indexOfDropDown]['Data']
                                               ['ImageUrl'];
+                                      dashboardController.assetType =
+                                          data['subcategory'][
+                                                  dashboardController
+                                                      .indexOfDropDown]['Data']
+                                              ['AssetType'];
                                       dashboardController.editHeadlineC.text =
                                           data['subcategory'][
                                                   dashboardController
@@ -284,8 +290,14 @@ class NewsDetail extends StatelessWidget {
                                                   dashboardController
                                                       .indexOfDropDown]['Data']
                                               ['Topic'];
-                                      editNewsPopup(context, width, height,
-                                          textHeight, sizingInformation);
+                                      editNewsPopup(
+                                        context,
+                                        width,
+                                        height,
+                                        textHeight,
+                                        sizingInformation,
+                                        'NewsDetail',
+                                      );
                                     },
                                     child: Image.asset(
                                       AssetRes.edit,
@@ -309,8 +321,16 @@ class NewsDetail extends StatelessWidget {
                                   ),
                                   InkWell(
                                     onTap: () {
-                                      deleteNews(context, width, height,
-                                          textHeight, sizingInformation);
+                                      deleteNews(
+                                          context,
+                                          width,
+                                          height,
+                                          textHeight,
+                                          sizingInformation,
+                                          data['subcategory'][
+                                                  dashboardController
+                                                      .indexOfDropDown]['Data']
+                                              ['HeadLine']);
                                     },
                                     child: Image.asset(
                                       AssetRes.delete,
