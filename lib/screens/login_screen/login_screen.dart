@@ -3,11 +3,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:news_web_app/common/common_textfield.dart';
 import 'package:news_web_app/screens/login_screen/login_controller.dart';
 import 'package:news_web_app/screens/news_screen/widgets/edit_news_popup.dart';
 import 'package:responsive_builder/responsive_builder.dart';
-
 import '../../common/text_styles.dart';
 import '../../utils/assets_res.dart';
 import '../../utils/color_res.dart';
@@ -41,7 +39,6 @@ class LoginScreen extends StatelessWidget {
                     List<Map<String, dynamic>> items = [];
                     for (var document in documents) {
                       var data = document.data() as Map<String, dynamic>;
-
                       controller.email = data['email'];
                       controller.password = data['password'];
                     }
@@ -108,7 +105,9 @@ class LoginScreen extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Container(
-                                    width: width * 0.75,
+                                    width: sizingInformation.isMobile
+                                        ? width * 1.1
+                                        : width * 0.75,
                                     decoration: BoxDecoration(
                                       border: Border.all(
                                           color: Colors.black.withOpacity(0.8),
@@ -157,7 +156,9 @@ class LoginScreen extends StatelessWidget {
                                     height: 25,
                                   ),
                                   Container(
-                                    width: width * 0.75,
+                                    width: sizingInformation.isMobile
+                                        ? width * 1.1
+                                        : width * 0.75,
                                     decoration: BoxDecoration(
                                       border: Border.all(
                                           color: Colors.black.withOpacity(0.8),

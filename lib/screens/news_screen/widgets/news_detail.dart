@@ -1,5 +1,6 @@
 // ignore_for_file: unused_local_variable, avoid_print, deprecated_member_use, no_leading_underscores_for_local_identifiers
 
+import 'dart:typed_data';
 import 'dart:ui';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -85,9 +86,10 @@ class NewsDetail extends StatelessWidget {
 
               return WillPopScope(
                 onWillPop: () async {
-                  if (dashboardController.isTapCategory == true) {
-                    dashboardController.isTapCategory = false;
-                    dashboardController.update(['category']);
+                  if (dashboardController.isNewsDetail == true) {
+                    dashboardController.isNewsDetail = false;
+                    dashboardController.update(['detailscreen']);
+                    dashboardController.update(['news']);
                     return false;
                   } else {
                     return true;
@@ -110,18 +112,19 @@ class NewsDetail extends StatelessWidget {
                         height: Get.height * 0.8,
                         clipBehavior: Clip.hardEdge,
                         decoration: BoxDecoration(
-                            gradient: const LinearGradient(
+                            /* gradient: const LinearGradient(
                               begin: Alignment.topCenter,
                               end: Alignment.bottomCenter,
                               colors: [
                                 ColorRes.menuBarWhite,
                                 ColorRes.menuBar,
                               ],
-                            ),
+                            ),*/
                             borderRadius: BorderRadius.circular(5),
                             border: Border.all(
                                 width: 2, color: ColorRes.borderColor)),
                         child: SingleChildScrollView(
+                          physics: const BouncingScrollPhysics(),
                           child: Column(
                             children: [
                               Text(
@@ -202,19 +205,32 @@ class NewsDetail extends StatelessWidget {
                                           ),
                                         ],
                                       )
-                                    : CachedNetworkImage(
-                                        imageUrl: data['subcategory'][
+                                    : data['subcategory'][dashboardController
+                                                    .indexOfDropDown]['Data']
+                                                ['ImageUrl'] ==
+                                            null
+                                        ? Image.memory(
+                                            Uint8List.fromList(
+                                                dashboardController.imageData!),
+                                            width: width * 0.9,
+                                            height: sizingInformation.isDesktop
+                                                ? height * 0.24
+                                                : height * 0.14,
+                                            fit: BoxFit.cover,
+                                          )
+                                        : CachedNetworkImage(
+                                            imageUrl: data['subcategory'][
                                                     dashboardController
                                                         .indexOfDropDown]
-                                                ['Data']['ImageUrl'] ??
-                                            "",
-                                        placeholder: (context, url) =>
-                                            const Center(
-                                                child:
-                                                    CircularProgressIndicator()),
-                                        errorWidget: (context, url, error) =>
-                                            const Icon(Icons.error),
-                                      ),
+                                                ['Data']['ImageUrl'],
+                                            placeholder: (context, url) =>
+                                                const Center(
+                                                    child:
+                                                        CircularProgressIndicator()),
+                                            errorWidget:
+                                                (context, url, error) =>
+                                                    const Icon(Icons.error),
+                                          ),
                               ),
                               SizedBox(
                                 height: Get.height * 0.025,

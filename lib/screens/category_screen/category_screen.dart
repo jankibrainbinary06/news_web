@@ -774,16 +774,18 @@ class CategoryScreen extends StatelessWidget {
                                                                             GestureDetector(
                                                                               onTap: () async {
                                                                                 if (dashboardController.subCategoryController.text.isNotEmpty) {
-                                                                                  await Users.add({
-                                                                                    "category": dashboardController.categoryController.text,
-                                                                                    "subcategory": [
-                                                                                      {
-                                                                                        "Name": dashboardController.subCategoryController.text,
-                                                                                        "Data": {},
-                                                                                      }
-                                                                                    ],
-                                                                                    "DateTime": DateTime.now(),
-                                                                                  });
+                                                                                  await Users.add(
+                                                                                    {
+                                                                                      "category": dashboardController.categoryController.text,
+                                                                                      "subcategory": [
+                                                                                        {
+                                                                                          "Name": dashboardController.subCategoryController.text,
+                                                                                          "Data": {},
+                                                                                        }
+                                                                                      ],
+                                                                                      "DateTime": DateTime.now(),
+                                                                                    },
+                                                                                  );
                                                                                   PrefService.setValue('subcategory', dashboardController.subCategoryController.text);
                                                                                 }
                                                                                 Users.get().then(
@@ -803,7 +805,6 @@ class CategoryScreen extends StatelessWidget {
                                                                                   },
                                                                                 );
                                                                                 dashboardController.subCategoryController.clear();
-
                                                                                 dashboardController.isCategory = false;
                                                                                 dashboardController.isNews = true;
                                                                                 Get.back();

@@ -1,70 +1,50 @@
-/*
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:video_player/video_player.dart';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
+import 'package:news_web_app/screens/news_screen/widgets/edit_news_popup.dart';
 
-void main() => runApp(MyApp());
+class Demo extends StatefulWidget {
+  const Demo({super.key});
 
-class MyApp extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Network Video Player Demo',
-      home: VideoPlayerScreen(),
-    );
-  }
+  State<Demo> createState() => _DemoState();
 }
 
-class VideoPlayerScreen extends StatefulWidget {
-  @override
-  _VideoPlayerScreenState createState() => _VideoPlayerScreenState();
-}
-
-class _VideoPlayerScreenState extends State<VideoPlayerScreen> {
-  late VideoPlayerController _controller;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = VideoPlayerController.network(
-      'https://firebasestorage.googleapis.com/v0/b/news-app-c50bf.appspot.com/o/NewsImage%2F145.png?alt=media&token=12dd77f7-6ec3-465c-bc02-fa0f6c84bee4',
-    )..initialize().then((_) {});
-  }
-
-  void _toggleVideo() {
-    if (_controller.value.isPlaying) {
-      _controller.pause();
-    } else {
-      _controller.play();
-    }
-  }
-
+class _DemoState extends State<Demo> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Network Video Player Example'),
-      ),
-      body: Center(
-        child: _controller.value.isInitialized
-            ? AspectRatio(
-                aspectRatio: _controller.value.aspectRatio,
-                child: VideoPlayer(_controller),
-              )
-            : CircularProgressIndicator(), // Show a loading spinner until video is initialized
-      ),
-      floatingActionButton: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          FloatingActionButton(
-            onPressed: _toggleVideo,
-            child: Icon(
-              _controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
-            ),
-          ),
-          SizedBox(height: 16),
-        ],
+      body: StreamBuilder(
+        stream: dashboardController.Users.snapshots(),
+        builder: (context, snapshot) {
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  // HtmlWidget(
+                  //   '''<h3>Demo</h3>''',
+                  //   textStyle: TextStyle(fontSize: 50),
+                  //   // turn on `webView` if you need IFRAME support (it's disabled by default)
+                  // ),
+                  Text("dsfhs", style: TextStyle(fontSize: 18)),
+                ],
+              ),
+              SizedBox(
+                height: 300,
+                child: CachedNetworkImage(
+                  imageUrl: snapshot.data!.docs[2]['subcategory'][0]['Data']
+                      ['ImageUrl'],
+                  placeholder: (context, url) =>
+                      const Center(child: CircularProgressIndicator()),
+                  errorWidget: (context, url, error) => const Icon(Icons.error),
+                ),
+              ),
+            ],
+          );
+        },
       ),
     );
   }
 }
-*/

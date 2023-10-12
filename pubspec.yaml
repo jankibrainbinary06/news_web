@@ -47,6 +47,8 @@ dependencies:
   firebase_storage: ^11.2.7
   flutter_dropdown: ^1.0.1+hotfix.1
   cached_network_image: ^3.3.0
+  html: ^0.15.4
+  flutter_widget_from_html: ^0.10.6
 
 dev_dependencies:
   flutter_test:
@@ -97,6 +99,9 @@ flutter:
     - family: poppinsSemiBold
       fonts:
        - asset: assets/fonts/Poppins-SemiBold.ttf
+    - family: sfbold
+      fonts:
+        - asset: assets/fonts/SFPRODISPLAYBOLD.OTF
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic
   #   - family: Trajan Pro

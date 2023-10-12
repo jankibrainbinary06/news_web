@@ -71,6 +71,14 @@ class NewsScreen extends StatelessWidget {
                 }
               }
 
+              void dialogueVideo() {
+                if (dashboardController.VideoCntrl!.value.isPlaying) {
+                  dashboardController.VideoCntrl!.pause();
+                } else {
+                  dashboardController.VideoCntrl!.play();
+                }
+              }
+
               return Container(
                 margin: EdgeInsets.only(
                   top: height * 0.062,
@@ -83,21 +91,22 @@ class NewsScreen extends StatelessWidget {
                       ? width * 0.1
                       : Get.width * 0.01,
                 ),
-                child: SingleChildScrollView(
-                  physics: const NeverScrollableScrollPhysics(),
-                  child: GetBuilder<DashboardController>(
-                    id: 'news',
-                    builder: (controller) {
-                      return WillPopScope(
-                        onWillPop: () async {
-                          if (dashboardController.isTapCategory == true) {
-                            dashboardController.isTapCategory = false;
-                            dashboardController.update(['category']);
-                            return false;
-                          } else {
-                            return true;
-                          }
-                        },
+                color: Colors.white,
+                child: GetBuilder<DashboardController>(
+                  id: 'news',
+                  builder: (controller) {
+                    return WillPopScope(
+                      onWillPop: () async {
+                        if (dashboardController.isTapCategory == true) {
+                          dashboardController.isTapCategory = false;
+                          dashboardController.update(['news']);
+                          return false;
+                        } else {
+                          return true;
+                        }
+                      },
+                      child: SingleChildScrollView(
+                        physics: const NeverScrollableScrollPhysics(),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
@@ -168,7 +177,6 @@ class NewsScreen extends StatelessWidget {
                                               dashboardController.description!;
                                           dashboardController.editTopicC.text =
                                               dashboardController.topic!;
-
                                           editNewsPopup(
                                             context,
                                             width,
@@ -474,27 +482,8 @@ class NewsScreen extends StatelessWidget {
                                     height: Get.height * 0.8,
                                     clipBehavior: Clip.hardEdge,
                                     decoration: BoxDecoration(
-                                        gradient:
-                                            (dashboardController.isNewsAdded ==
-                                                        false &&
-                                                    dashboardController
-                                                            .isNewsCategory ==
-                                                        false)
-                                                ? const LinearGradient(
-                                                    colors: [
-                                                      ColorRes.menuBarWhite,
-                                                      ColorRes.menuBar
-                                                    ],
-                                                    begin: AlignmentDirectional
-                                                        .topCenter,
-                                                    end: AlignmentDirectional
-                                                        .bottomCenter,
-                                                  )
-                                                : const LinearGradient(colors: [
-                                                    Colors.white,
-                                                    Colors.white
-                                                  ]),
                                         borderRadius: BorderRadius.circular(5),
+                                        color: Colors.white,
                                         border: Border.all(
                                             width: 2,
                                             color: ColorRes.appColor)),
@@ -523,204 +512,213 @@ class NewsScreen extends StatelessWidget {
                                                     height: Get.height * 0.04,
                                                   ),
                                                   Expanded(
-                                                    child:
-                                                        SingleChildScrollView(
-                                                      child: GridView.builder(
-                                                        physics:
-                                                            const BouncingScrollPhysics(),
-                                                        shrinkWrap: true,
-                                                        itemCount:
-                                                            dashboardController
-                                                                .dropItems
-                                                                .length,
-                                                        gridDelegate:
-                                                            SliverGridDelegateWithFixedCrossAxisCount(
-                                                          crossAxisCount:
-                                                              sizingInformation
-                                                                      .isMobile
-                                                                  ? 1
-                                                                  : 2,
-                                                          mainAxisExtent:
-                                                              sizingInformation
-                                                                      .isMobile
-                                                                  ? 60
-                                                                  : 80,
-                                                        ),
-                                                        itemBuilder:
-                                                            (context, y) {
-                                                          return Container(
-                                                            padding: EdgeInsets
-                                                                .symmetric(
-                                                                    horizontal:
-                                                                        width *
-                                                                            0.01),
-                                                            margin: EdgeInsets.symmetric(
-                                                                horizontal: sizingInformation
-                                                                        .isMobile
-                                                                    ? width *
-                                                                        0.1
-                                                                    : width *
-                                                                        0.25,
-                                                                vertical: sizingInformation
-                                                                        .isMobile
-                                                                    ? height *
-                                                                        0.015
-                                                                    : height *
-                                                                        0.02),
-                                                            decoration:
-                                                                BoxDecoration(
+                                                    child: GridView.builder(
+                                                      physics:
+                                                          const BouncingScrollPhysics(),
+                                                      itemCount:
+                                                          dashboardController
+                                                              .dropItems.length,
+                                                      gridDelegate:
+                                                          SliverGridDelegateWithFixedCrossAxisCount(
+                                                        crossAxisCount:
+                                                            sizingInformation
+                                                                    .isMobile
+                                                                ? 1
+                                                                : 2,
+                                                        mainAxisExtent:
+                                                            sizingInformation
+                                                                    .isMobile
+                                                                ? 60
+                                                                : 80,
+                                                      ),
+                                                      itemBuilder:
+                                                          (context, y) {
+                                                        return Container(
+                                                          padding: EdgeInsets
+                                                              .symmetric(
+                                                                  horizontal:
+                                                                      width *
+                                                                          0.01),
+                                                          margin: EdgeInsets.symmetric(
+                                                              horizontal:
+                                                                  sizingInformation
+                                                                          .isMobile
+                                                                      ? width *
+                                                                          0.1
+                                                                      : width *
+                                                                          0.25,
+                                                              vertical:
+                                                                  sizingInformation
+                                                                          .isMobile
+                                                                      ? height *
+                                                                          0.015
+                                                                      : height *
+                                                                          0.02),
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            color: Colors.white,
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        5),
+                                                            border: Border.all(
+                                                              color: ColorRes
+                                                                  .borderColor,
+                                                            ),
+                                                          ),
+                                                          child:
+                                                              DropdownButtonHideUnderline(
+                                                            child:
+                                                                DropdownButton(
+                                                              hint: Row(
+                                                                children: [
+                                                                  const Spacer(),
+                                                                  Expanded(
+                                                                    child:
+                                                                        Center(
+                                                                      child:
+                                                                          Text(
+                                                                        dashboardController
+                                                                            .dropItems[y]['category']
+                                                                            .toString(),
+                                                                        maxLines:
+                                                                            1,
+                                                                        overflow:
+                                                                            TextOverflow.ellipsis,
+                                                                        style:
+                                                                            TextStyle(
+                                                                          overflow:
+                                                                              TextOverflow.ellipsis,
+                                                                          letterSpacing:
+                                                                              0.5,
+                                                                          fontFamily:
+                                                                              'sfbold',
+                                                                          color: Colors
+                                                                              .black
+                                                                              .withOpacity(0.8),
+                                                                          fontSize:
+                                                                              18,
+                                                                        ),
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                  const Spacer(),
+                                                                ],
+                                                              ),
+                                                              onTap: () {
+                                                                dashboardController
+                                                                    .showNewsIndex = y;
+                                                                dashboardController
+                                                                        .imagedocid =
+                                                                    snapshot
+                                                                        .data!
+                                                                        .docs[dashboardController
+                                                                            .showNewsIndex!]
+                                                                        .id;
+
+                                                                dashboardController
+                                                                    .update([
+                                                                  'dash'
+                                                                ]);
+                                                                dashboardController
+                                                                    .update([
+                                                                  'news'
+                                                                ]);
+                                                              },
+                                                              isExpanded: true,
+                                                              dropdownColor:
+                                                                  Colors.white,
+                                                              focusColor: ColorRes
+                                                                  .newsbgtextfield,
                                                               borderRadius:
                                                                   BorderRadius
                                                                       .circular(
                                                                           5),
-                                                              border: Border.all(
-                                                                  color: ColorRes
-                                                                      .borderColor),
-                                                            ),
-                                                            height: Get.height *
-                                                                0.07,
-                                                            child:
-                                                                DropdownButtonHideUnderline(
-                                                              child:
-                                                                  DropdownButton(
-                                                                hint: Row(
-                                                                  children: [
-                                                                    const Spacer(),
-                                                                    Text(
-                                                                      dashboardController
-                                                                          .dropItems[
-                                                                              y]
-                                                                              [
-                                                                              'category']
-                                                                          .toString(),
-                                                                      style:
-                                                                          TextStyle(
-                                                                        color: Colors
-                                                                            .black
-                                                                            .withOpacity(1),
-                                                                        fontSize:
-                                                                            18,
-                                                                      ),
-                                                                    ),
-                                                                    const Spacer(),
-                                                                  ],
-                                                                ),
-                                                                onTap: () {
-                                                                  dashboardController
-                                                                      .showNewsIndex = y;
-                                                                  dashboardController
-                                                                          .imagedocid =
-                                                                      snapshot
-                                                                          .data!
-                                                                          .docs[
-                                                                              dashboardController.showNewsIndex!]
-                                                                          .id;
+                                                              icon:
+                                                                  const Padding(
+                                                                padding: EdgeInsets
+                                                                    .only(
+                                                                        right:
+                                                                            10),
+                                                                child: Icon(
+                                                                    Icons
+                                                                        .keyboard_arrow_down_outlined,
+                                                                    color: Colors
+                                                                        .black,
+                                                                    size: 20),
+                                                              ),
+                                                              elevation: 16,
+                                                              onChanged:
+                                                                  (value) {
+                                                                print(value);
+                                                                dashboardController
+                                                                        .isNewsDetail =
+                                                                    true;
 
-                                                                  dashboardController
-                                                                      .update([
-                                                                    'dash'
-                                                                  ]);
-                                                                  dashboardController
-                                                                      .update([
-                                                                    'news'
-                                                                  ]);
-                                                                },
-                                                                isExpanded:
-                                                                    true,
-                                                                dropdownColor:
-                                                                    Colors
-                                                                        .white,
-                                                                focusColor: ColorRes
-                                                                    .newsbgtextfield,
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            5),
-                                                                icon:
-                                                                    const Padding(
-                                                                  padding: EdgeInsets
-                                                                      .only(
-                                                                          right:
-                                                                              10),
-                                                                  child: Icon(
-                                                                      Icons
-                                                                          .keyboard_arrow_down_outlined,
-                                                                      color: Colors
-                                                                          .black,
-                                                                      size: 20),
-                                                                ),
-                                                                elevation: 16,
-                                                                onChanged:
-                                                                    (value) {
-                                                                  print(value);
-                                                                  dashboardController
-                                                                          .isNewsDetail =
-                                                                      true;
+                                                                print(
+                                                                    "------>DropIndex${dashboardController.indexOfDropDown}");
 
-                                                                  print(
-                                                                      "------>DropIndex${dashboardController.indexOfDropDown}");
-
-                                                                  dashboardController
-                                                                      .update([
-                                                                    'news'
-                                                                  ]);
-                                                                  dashboardController
-                                                                      .update([
-                                                                    'dash'
-                                                                  ]);
-                                                                },
-                                                                items: List
-                                                                    .generate(
-                                                                  dashboardController
+                                                                dashboardController
+                                                                    .update([
+                                                                  'news'
+                                                                ]);
+                                                                dashboardController
+                                                                    .update([
+                                                                  'dash'
+                                                                ]);
+                                                              },
+                                                              items:
+                                                                  List.generate(
+                                                                dashboardController
+                                                                    .dropItems[
+                                                                        y][
+                                                                        'subCategory']
+                                                                    .length,
+                                                                (index) =>
+                                                                    DropdownMenuItem(
+                                                                  value: dashboardController
+                                                                          .dropItems[y]
+                                                                      [
+                                                                      'subCategory'][index],
+                                                                  onTap: () {
+                                                                    print(dashboardController
+                                                                        .dropItems);
+                                                                    dashboardController
+                                                                        .dropItems
+                                                                        .forEach(
+                                                                      (element) {
+                                                                        element['subCategory']
+                                                                            .forEach(
+                                                                          (e) {
+                                                                            if (e ==
+                                                                                dashboardController.dropItems[y]['subCategory'][index]) {
+                                                                              dashboardController.indexOfDropDown = element['subCategory'].indexOf(e);
+                                                                            }
+                                                                          },
+                                                                        );
+                                                                      },
+                                                                    );
+                                                                    PrefService.setValue(
+                                                                        'subcategory',
+                                                                        dashboardController
+                                                                            .dropItems[y]['subCategory'][index]['Name']
+                                                                            .toString());
+                                                                  },
+                                                                  child: Text(dashboardController
                                                                       .dropItems[
                                                                           y][
                                                                           'subCategory']
-                                                                      .length,
-                                                                  (index) =>
-                                                                      DropdownMenuItem(
-                                                                    value: dashboardController.dropItems[y]
-                                                                            [
-                                                                            'subCategory']
-                                                                        [index],
-                                                                    onTap: () {
-                                                                      print(dashboardController
-                                                                          .dropItems);
-                                                                      dashboardController
-                                                                          .dropItems
-                                                                          .forEach(
-                                                                        (element) {
-                                                                          element['subCategory']
-                                                                              .forEach(
-                                                                            (e) {
-                                                                              if (e == dashboardController.dropItems[y]['subCategory'][index]) {
-                                                                                dashboardController.indexOfDropDown = element['subCategory'].indexOf(e);
-                                                                              }
-                                                                            },
-                                                                          );
-                                                                        },
-                                                                      );
-                                                                      PrefService.setValue(
-                                                                          'subcategory',
-                                                                          dashboardController
-                                                                              .dropItems[y]['subCategory'][index]['Name']
-                                                                              .toString());
-                                                                    },
-                                                                    child: Text(dashboardController
-                                                                        .dropItems[
-                                                                            y][
-                                                                            'subCategory']
-                                                                            [
-                                                                            index]
-                                                                            [
-                                                                            'Name']
-                                                                        .toString()), // Convert the dynamic item to a string
-                                                                  ),
+                                                                          [
+                                                                          index]
+                                                                          [
+                                                                          'Name']
+                                                                      .toString()), // Convert the dynamic item to a string
                                                                 ),
                                                               ),
                                                             ),
-                                                          );
-                                                        },
-                                                      ),
+                                                          ),
+                                                        );
+                                                      },
                                                     ),
                                                   )
                                                 ],
@@ -829,8 +827,6 @@ class NewsScreen extends StatelessWidget {
                                                                           dashboardController
                                                                               .newsImage!,
                                                                         ),
-                                                                        // width: width *
-                                                                        //     25,
                                                                         height: sizingInformation.isDesktop
                                                                             ? height *
                                                                                 0.5
@@ -875,10 +871,10 @@ class NewsScreen extends StatelessWidget {
                                                             .topic!,
                                                         style:
                                                             mediumSf.copyWith(
-                                                                fontSize: 32,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w600),
+                                                          fontSize: 32,
+                                                          fontWeight:
+                                                              FontWeight.w600,
+                                                        ),
                                                       ),
                                                       SizedBox(
                                                         height:
@@ -889,10 +885,10 @@ class NewsScreen extends StatelessWidget {
                                                             .description!,
                                                         style:
                                                             mediumSf.copyWith(
-                                                                fontSize: 22,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .w400),
+                                                          fontSize: 22,
+                                                          fontWeight:
+                                                              FontWeight.w400,
+                                                        ),
                                                       ),
                                                       const SizedBox(
                                                         height: 10,
@@ -921,6 +917,23 @@ class NewsScreen extends StatelessWidget {
 
                                                           print(
                                                               "DOC ID-------------->$action");
+                                                          await dashboardController
+                                                              .storage
+                                                              .ref(
+                                                                  "NewsImage/${DateTime.now().millisecond}.png")
+                                                              .putData(
+                                                                  dashboardController
+                                                                      .imageData!)
+                                                              .then(
+                                                            (p0) async {
+                                                              dashboardController
+                                                                      .url =
+                                                                  await p0.ref
+                                                                      .getDownloadURL();
+                                                              print(
+                                                                  'URL ${dashboardController.url}');
+                                                            },
+                                                          );
 
                                                           await dashboardController
                                                                       .Users
@@ -955,42 +968,44 @@ class NewsScreen extends StatelessWidget {
 
                                                             dashboardController
                                                                 .newsData
-                                                                .add({
-                                                              "Name":
-                                                                  subcategory,
-                                                              "Data": {
-                                                                "HeadLine":
-                                                                    dashboardController
-                                                                        .headline,
-                                                                "ChannelName":
-                                                                    dashboardController
-                                                                        .channel,
-                                                                "Date":
-                                                                    dashboardController
-                                                                        .date,
-                                                                "Time":
-                                                                    dashboardController
-                                                                        .time,
-                                                                "State":
-                                                                    dashboardController
-                                                                        .state,
-                                                                "City":
-                                                                    dashboardController
-                                                                        .city,
-                                                                "Topic":
-                                                                    dashboardController
-                                                                        .topic,
-                                                                "Description":
-                                                                    dashboardController
-                                                                        .description,
-                                                                "ImageUrl":
-                                                                    dashboardController
-                                                                        .url,
-                                                                "AssetType":
-                                                                    dashboardController
-                                                                        .type,
-                                                              }
-                                                            });
+                                                                .add(
+                                                              {
+                                                                "Name":
+                                                                    subcategory,
+                                                                "Data": {
+                                                                  "HeadLine":
+                                                                      dashboardController
+                                                                          .headline,
+                                                                  "ChannelName":
+                                                                      dashboardController
+                                                                          .channel,
+                                                                  "Date":
+                                                                      dashboardController
+                                                                          .date,
+                                                                  "Time":
+                                                                      dashboardController
+                                                                          .time,
+                                                                  "State":
+                                                                      dashboardController
+                                                                          .state,
+                                                                  "City":
+                                                                      dashboardController
+                                                                          .city,
+                                                                  "Topic":
+                                                                      dashboardController
+                                                                          .topic,
+                                                                  "Description":
+                                                                      dashboardController
+                                                                          .description,
+                                                                  "ImageUrl":
+                                                                      dashboardController
+                                                                          .url,
+                                                                  "AssetType":
+                                                                      dashboardController
+                                                                          .type,
+                                                                },
+                                                              },
+                                                            );
                                                           } else {
                                                             dashboardController
                                                                         .subIndex ==
@@ -1003,49 +1018,52 @@ class NewsScreen extends StatelessWidget {
                                                                     .removeAt(
                                                                         dashboardController
                                                                             .subIndex!);
-                                                            dashboardController.newsData.insert(
-                                                                dashboardController
-                                                                            .subIndex ==
-                                                                        null
-                                                                    ? 0
-                                                                    : dashboardController
-                                                                        .subIndex!,
-                                                                {
-                                                                  "Name":
-                                                                      subcategory,
-                                                                  "Data": {
-                                                                    "HeadLine":
-                                                                        dashboardController
-                                                                            .headline,
-                                                                    "ChannelName":
-                                                                        dashboardController
-                                                                            .channel,
-                                                                    "Date":
-                                                                        dashboardController
-                                                                            .date,
-                                                                    "Time":
-                                                                        dashboardController
-                                                                            .time,
-                                                                    "State":
-                                                                        dashboardController
-                                                                            .state,
-                                                                    "City":
-                                                                        dashboardController
-                                                                            .city,
-                                                                    "Topic":
-                                                                        dashboardController
-                                                                            .topic,
-                                                                    "Description":
-                                                                        dashboardController
-                                                                            .description,
-                                                                    "ImageUrl":
-                                                                        dashboardController
-                                                                            .url,
-                                                                    "AssetType":
-                                                                        dashboardController
-                                                                            .type,
-                                                                  }
-                                                                });
+                                                            dashboardController
+                                                                .newsData
+                                                                .insert(
+                                                              dashboardController
+                                                                          .subIndex ==
+                                                                      null
+                                                                  ? 0
+                                                                  : dashboardController
+                                                                      .subIndex!,
+                                                              {
+                                                                "Name":
+                                                                    subcategory,
+                                                                "Data": {
+                                                                  "HeadLine":
+                                                                      dashboardController
+                                                                          .headline,
+                                                                  "ChannelName":
+                                                                      dashboardController
+                                                                          .channel,
+                                                                  "Date":
+                                                                      dashboardController
+                                                                          .date,
+                                                                  "Time":
+                                                                      dashboardController
+                                                                          .time,
+                                                                  "State":
+                                                                      dashboardController
+                                                                          .state,
+                                                                  "City":
+                                                                      dashboardController
+                                                                          .city,
+                                                                  "Topic":
+                                                                      dashboardController
+                                                                          .topic,
+                                                                  "Description":
+                                                                      dashboardController
+                                                                          .description,
+                                                                  "ImageUrl":
+                                                                      dashboardController
+                                                                          .url,
+                                                                  "AssetType":
+                                                                      dashboardController
+                                                                          .type,
+                                                                },
+                                                              },
+                                                            );
                                                           }
 
                                                           print(
@@ -1283,6 +1301,19 @@ class NewsScreen extends StatelessWidget {
                                                                               ? GestureDetector(
                                                                                   onTap: () async {
                                                                                     await dashboardController.pickImage(updateDialog);
+                                                                                    if (dashboardController.imageData!.isNotEmpty && dashboardController.type == 'mp4') {
+                                                                                      dashboardController.isVideoUploaded = true;
+                                                                                      dashboardController.update(['news']);
+                                                                                      await dashboardController.storage.ref("NewsImage/${DateTime.now().millisecond}.png").putData(dashboardController.imageData!).then((p0) async {
+                                                                                        dashboardController.url = await p0.ref.getDownloadURL();
+                                                                                        print('URL ${dashboardController.url}');
+                                                                                      });
+                                                                                      dashboardController.VideoCntrl = VideoPlayerController.network("${dashboardController.url}")..initialize().then((_) {});
+                                                                                      dashboardController.isVideoUploaded = false;
+                                                                                      dashboardController.update(['news']);
+                                                                                    } else {
+                                                                                      print("ERROR");
+                                                                                    }
                                                                                     updateDialog.call(() {});
                                                                                   },
                                                                                   child: dashboardController.loadImg == true
@@ -1335,27 +1366,60 @@ class NewsScreen extends StatelessWidget {
                                                                                           ),
                                                                                         ),
                                                                                 )
-                                                                              : Container(
-                                                                                  decoration: BoxDecoration(
-                                                                                    borderRadius: BorderRadius.circular(
-                                                                                      6,
+                                                                              : dashboardController.isVideoUploaded
+                                                                                  ? SizedBox(height: height * 0.25, child: Center(child: CircularProgressIndicator()))
+                                                                                  : Container(
+                                                                                      decoration: BoxDecoration(
+                                                                                        borderRadius: BorderRadius.circular(
+                                                                                          6,
+                                                                                        ),
+                                                                                        border: Border.all(color: Colors.white, width: 1),
+                                                                                      ),
+                                                                                      child: ClipRRect(
+                                                                                        borderRadius: BorderRadius.circular(
+                                                                                          10,
+                                                                                        ),
+                                                                                        child: dashboardController.result!.files.first.extension != 'mp4'
+                                                                                            ? Image.memory(
+                                                                                                Uint8List.fromList(dashboardController.imageData!),
+                                                                                                width: width * 0.85,
+                                                                                                height: sizingInformation.isDesktop ? height * 0.24 : height * 0.14,
+                                                                                                fit: BoxFit.cover,
+                                                                                              )
+                                                                                            : Stack(
+                                                                                                children: [
+                                                                                                  Center(
+                                                                                                    child: Container(
+                                                                                                      width: width * 1,
+                                                                                                      decoration: BoxDecoration(
+                                                                                                        borderRadius: BorderRadius.circular(5),
+                                                                                                      ),
+                                                                                                      height: sizingInformation.isDesktop ? height * 0.24 : height * 0.14,
+                                                                                                      child: VideoPlayer(
+                                                                                                        dashboardController.VideoCntrl!,
+                                                                                                      ),
+                                                                                                    ),
+                                                                                                  ),
+                                                                                                  Positioned(
+                                                                                                    top: height * 0.09,
+                                                                                                    left: width * 0.85,
+                                                                                                    child: Center(
+                                                                                                      child: InkWell(
+                                                                                                        onTap: () {
+                                                                                                          dialogueVideo();
+                                                                                                          updateDialog.call(() {});
+                                                                                                        },
+                                                                                                        child: CircleAvatar(
+                                                                                                          maxRadius: 20,
+                                                                                                          child: dashboardController.VideoCntrl!.value.isPlaying ? const Icon(Icons.pause) : const Icon(Icons.play_arrow),
+                                                                                                        ),
+                                                                                                      ),
+                                                                                                    ),
+                                                                                                  ),
+                                                                                                ],
+                                                                                              ),
+                                                                                      ),
                                                                                     ),
-                                                                                    border: Border.all(color: Colors.white, width: 1),
-                                                                                  ),
-                                                                                  child: ClipRRect(
-                                                                                    borderRadius: BorderRadius.circular(
-                                                                                      10,
-                                                                                    ),
-                                                                                    child: dashboardController.result!.files.first.extension != 'mp4'
-                                                                                        ? Image.memory(
-                                                                                            Uint8List.fromList(dashboardController.imageData!),
-                                                                                            width: width * 0.85,
-                                                                                            height: sizingInformation.isDesktop ? height * 0.24 : height * 0.14,
-                                                                                            fit: BoxFit.cover,
-                                                                                          )
-                                                                                        : Image.asset(AssetRes.videoThumbnail),
-                                                                                  ),
-                                                                                ),
                                                                           const SizedBox(),
                                                                           SizedBox(
                                                                             height:
@@ -1883,9 +1947,9 @@ class NewsScreen extends StatelessWidget {
                                 : const NewsDetail(),
                           ],
                         ),
-                      );
-                    },
-                  ),
+                      ),
+                    );
+                  },
                 ),
               );
             } else {

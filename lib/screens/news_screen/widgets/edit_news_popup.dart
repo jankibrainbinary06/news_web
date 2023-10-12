@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:news_web_app/screens/dashboard_screen/dashboard_controller.dart';
 import 'package:news_web_app/utils/assets_res.dart';
+import 'package:video_player/video_player.dart';
 
 import '../../../Services/Shared_pref_services/pref_service.dart';
 import '../../../utils/color_res.dart';
@@ -94,46 +95,91 @@ editNewsPopup(
                           SizedBox(
                             height: Get.height * 0.02,
                           ),
-                          Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(
-                                10,
-                              ),
-                              border: Border.all(
-                                  color: ColorRes.newsborder, width: 1),
-                            ),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(
-                                10,
-                              ),
-                              child: dashboardController.type == 'mp4'
-                                  ? SizedBox(
-                                      height: height * 0.3,
-                                      width: width * 1,
-                                      child: Image.asset(
-                                        fit: BoxFit.fill,
-                                        AssetRes.videoThumbnail,
-                                      ),
-                                    )
-                                  : dashboardController.editImg!.isNotEmpty
+                          Stack(
+                            clipBehavior: Clip.none,
+                            children: [
+                              Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(
+                                    10,
+                                  ),
+                                  border: Border.all(
+                                      color: ColorRes.newsborder, width: 1),
+                                ),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(
+                                    10,
+                                  ),
+                                  child: dashboardController.type == 'mp4'
                                       ? SizedBox(
                                           height: height * 0.3,
                                           width: width * 1,
-                                          child: Image.network(
+                                          child: Image.asset(
                                             fit: BoxFit.fill,
-                                            dashboardController.editImg!,
+                                            AssetRes.videoThumbnail,
                                           ),
                                         )
-                                      : Image.memory(
-                                          Uint8List.fromList(
-                                              dashboardController.newsImage!),
-                                          width: width * 0.9,
-                                          height: sizingInformation.isDesktop
-                                              ? height * 0.24
-                                              : height * 0.14,
-                                          fit: BoxFit.cover,
-                                        ),
-                            ),
+                                      : dashboardController.editImg!.isNotEmpty
+                                          ? SizedBox(
+                                              height: height * 0.3,
+                                              width: width * 1,
+                                              child: Image.network(
+                                                fit: BoxFit.fill,
+                                                dashboardController.editImg!,
+                                              ),
+                                            )
+                                          : Image.memory(
+                                              Uint8List.fromList(
+                                                  dashboardController
+                                                      .imageData!),
+                                              width: width * 0.9,
+                                              height:
+                                                  sizingInformation.isDesktop
+                                                      ? height * 0.24
+                                                      : height * 0.14,
+                                              fit: BoxFit.cover,
+                                            ),
+                                ),
+                              ),
+                              Positioned(
+                                right: -5,
+                                bottom: -5,
+                                child: InkWell(
+                                  onTap: () async {
+                                    await dashboardController
+                                        .pickImage(updateDialog);
+                                    if (from == 'NewsDetail') {
+                                      await dashboardController.storage
+                                          .ref(
+                                              "NewsImage/${DateTime.now().millisecond}.png")
+                                          .putData(
+                                              dashboardController.imageData!)
+                                          .then((p0) async {
+                                        dashboardController.editImg =
+                                            await p0.ref.getDownloadURL();
+                                        print(
+                                            'URL ${dashboardController.editImg}');
+                                      });
+                                      // dashboardController.editImg = "";
+                                    }
+                                    updateDialog.call(() {});
+                                  },
+                                  child: Container(
+                                    height: 20,
+                                    width: 20,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(5),
+                                        color: Colors.white),
+                                    child: Image.asset(
+                                      AssetRes.edit,
+                                      height: 20,
+                                      width: 20,
+                                      color: Colors.black.withOpacity(0.8),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                           SizedBox(
                             height: height * 0.03,
@@ -170,7 +216,7 @@ editNewsPopup(
                                           left: width * 0.05,
                                           bottom: height * 0.03,
                                         ),
-                                        hintStyle: TextStyle(
+                                        hintStyle: const TextStyle(
                                           fontFamily: "sfPro",
                                           color: ColorRes.newsText,
                                           fontWeight: FontWeight.w500,
@@ -223,7 +269,7 @@ editNewsPopup(
                                           left: width * 0.05,
                                           bottom: height * 0.03,
                                         ),
-                                        hintStyle: TextStyle(
+                                        hintStyle: const TextStyle(
                                           fontFamily: "sfPro",
                                           color: ColorRes.newsText,
                                           fontWeight: FontWeight.w500,
@@ -292,7 +338,7 @@ editNewsPopup(
                                       left: width * 0.05,
                                       bottom: height * 0.03,
                                     ),
-                                    hintStyle: TextStyle(
+                                    hintStyle: const TextStyle(
                                         fontFamily: "sfPro",
                                         color: ColorRes.newsText),
                                     hintText: 'Add date',
@@ -343,7 +389,7 @@ editNewsPopup(
                                         left: width * 0.05,
                                         bottom: height * 0.03,
                                       ),
-                                      hintStyle: TextStyle(
+                                      hintStyle: const TextStyle(
                                         fontFamily: "sfPro",
                                         color: ColorRes.newsText,
                                         fontWeight: FontWeight.w500,
@@ -386,7 +432,7 @@ editNewsPopup(
                                         left: width * 0.05,
                                         bottom: height * 0.03,
                                       ),
-                                      hintStyle: TextStyle(
+                                      hintStyle: const TextStyle(
                                         fontFamily: "sfPro",
                                         color: ColorRes.newsText,
                                         fontWeight: FontWeight.w500,
@@ -436,7 +482,7 @@ editNewsPopup(
                                         left: width * 0.05,
                                         bottom: height * 0.03,
                                       ),
-                                      hintStyle: TextStyle(
+                                      hintStyle: const TextStyle(
                                         fontFamily: "sfPro",
                                         color: ColorRes.newsText,
                                         fontWeight: FontWeight.w500,
@@ -489,7 +535,7 @@ editNewsPopup(
                                             left: width * 0.08,
                                             bottom: height * 0.023,
                                           ),
-                                          hintStyle: TextStyle(
+                                          hintStyle: const TextStyle(
                                             fontFamily: "sfPro",
                                             color: ColorRes.newsText,
                                             fontWeight: FontWeight.w500,
@@ -508,8 +554,9 @@ editNewsPopup(
                                   ],
                                 ),
                                 Container(
-                                  margin: EdgeInsets.symmetric(horizontal: 10),
-                                  padding: EdgeInsets.all(10),
+                                  margin: const EdgeInsets.symmetric(
+                                      horizontal: 10),
+                                  padding: const EdgeInsets.all(10),
                                   height: height * 0.15,
                                   width: width * 1.3,
                                   decoration: BoxDecoration(
@@ -541,7 +588,7 @@ editNewsPopup(
                                               left: width * 0.08,
                                               bottom: height * 0.023,
                                             ),
-                                            hintStyle: TextStyle(
+                                            hintStyle: const TextStyle(
                                               fontFamily: "sfPro",
                                               color: ColorRes.newsText,
                                               fontWeight: FontWeight.w500,
@@ -586,6 +633,8 @@ editNewsPopup(
                               dashboardController.editCityC.text;
                           dashboardController.channel =
                               dashboardController.editChannelC.text;
+                          dashboardController.newsImage =
+                              dashboardController.imageData;
 
                           if (from == 'NewsDetail') {
                             final String subcategory =
@@ -599,6 +648,17 @@ editNewsPopup(
                               dashboardController.newsData =
                                   value['subcategory'];
                             });
+                            await dashboardController.storage
+                                .ref(
+                                    "NewsImage/${DateTime.now().millisecond}.png")
+                                .putData(dashboardController.imageData!)
+                                .then(
+                              (p0) async {
+                                dashboardController.editImg =
+                                    await p0.ref.getDownloadURL();
+                                print('URL ${dashboardController.editImg}');
+                              },
+                            );
 
                             dashboardController.newsData
                                 .removeAt(dashboardController.indexOfDropDown!);
@@ -631,6 +691,7 @@ editNewsPopup(
                           Get.back();
                           dashboardController.update(['dash']);
                           dashboardController.update(['news']);
+                          dashboardController.update(['detailscreen']);
                         },
                         child: Container(
                           decoration: BoxDecoration(

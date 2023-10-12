@@ -77,6 +77,7 @@ class DashboardController extends GetxController {
   bool isNewsCategory = true;
   bool isNewsDetail = false;
   bool subCNews = false;
+  bool isVideoUploaded = false;
 
   int selectedIndex = 0;
 
